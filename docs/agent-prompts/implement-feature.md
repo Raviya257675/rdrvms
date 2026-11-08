@@ -1,0 +1,3 @@
+# Agent prompt — implement feature
+
+Implement only `specs/features/<ID>/spec.md`, citing FR/AT IDs. First inspect `AGENTS.md`, constitution, threat model, ADRs, current OpenAPI and plan/tasks. Summarize affected modules, dependencies, auth boundaries, schema and failure modes **before editing**. Add failing tests first and show honest command output. Implement minimal TypeScript code, no new dependencies/permissions without approval. Run relevant tests. Update OpenAPI, ADR, traceability and task statuses. Return changed files, commands/results, security/DB impact and unresolved items. Stop for any destructive migration, secret, production deploy, real PII or official emergency integration.

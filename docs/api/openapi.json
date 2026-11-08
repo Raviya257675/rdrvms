@@ -1,0 +1,1893 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "RDRVMS draft REST API",
+    "version": "0.1.0",
+    "description": "PROPOSED contract only, no endpoints implemented. Review before code; private fields intentionally omitted."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Future local API; not currently implemented"
+    }
+  ],
+  "paths": {
+    "/api/v1/auth/register": {
+      "post": {
+        "tags": [
+          "FR-001"
+        ],
+        "summary": "FR-001: Guest. Draft contract; refine response schema before coding.",
+        "operationId": "post_api_v1_auth_register",
+        "responses": {
+          "201": {
+            "description": "Resource created"
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "State/version conflict"
+          }
+        },
+        "x-requirement-id": "FR-001",
+        "x-implementation-status": "planned",
+        "security": []
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": [
+          "FR-002"
+        ],
+        "summary": "FR-002: Guest. Draft contract; refine response schema before coding.",
+        "operationId": "post_api_v1_auth_login",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "429": {
+            "description": "Rate limited"
+          }
+        },
+        "x-requirement-id": "FR-002",
+        "x-implementation-status": "planned",
+        "security": []
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "tags": [
+          "FR-002"
+        ],
+        "summary": "FR-002: Authenticated. Draft contract; refine response schema before coding.",
+        "operationId": "post_api_v1_auth_logout",
+        "responses": {
+          "204": {
+            "description": "Success, no content"
+          }
+        },
+        "x-requirement-id": "FR-002",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required for cookie-authenticated state changes."
+          }
+        ]
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "tags": [
+          "FR-002"
+        ],
+        "summary": "FR-002: Authenticated. Draft contract; refine response schema before coding.",
+        "operationId": "get_api_v1_auth_me",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          }
+        },
+        "x-requirement-id": "FR-002",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/incidents": {
+      "get": {
+        "tags": [
+          "FR-010"
+        ],
+        "summary": "FR-010: Public, redacted. Draft contract; refine response schema before coding.",
+        "operationId": "get_api_v1_incidents",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          }
+        },
+        "x-requirement-id": "FR-010",
+        "x-implementation-status": "planned",
+        "security": []
+      },
+      "post": {
+        "tags": [
+          "FR-007"
+        ],
+        "summary": "FR-007: Reporter+. Draft contract; refine response schema before coding.",
+        "operationId": "post_api_v1_incidents",
+        "responses": {
+          "201": {
+            "description": "Resource created"
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-requirement-id": "FR-007",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IncidentCreate"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required for cookie-authenticated state changes."
+          }
+        ]
+      }
+    },
+    "/api/v1/incidents/{id}": {
+      "get": {
+        "tags": [
+          "FR-013"
+        ],
+        "summary": "FR-013: Scoped. Draft contract; refine response schema before coding.",
+        "operationId": "get_api_v1_incidents__id_",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found or hidden"
+          }
+        },
+        "x-requirement-id": "FR-013",
+        "x-implementation-status": "planned",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/incidents/{id}/verify": {
+      "patch": {
+        "tags": [
+          "FR-008"
+        ],
+        "summary": "FR-008: Coordinator. Draft contract; refine response schema before coding.",
+        "operationId": "patch_api_v1_incidents__id__verify",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "409": {
+            "description": "State/version conflict"
+          }
+        },
+        "x-requirement-id": "FR-008",
+        "x-implementation-status": "planned",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required for cookie-authenticated state changes."
+          }
+        ],
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerificationCommand"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/incidents/{id}/status": {
+      "patch": {
+        "tags": [
+          "FR-009"
+        ],
+        "summary": "FR-009: Coordinator. Draft contract; refine response schema before coding.",
+        "operationId": "patch_api_v1_incidents__id__status",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "409": {
+            "description": "State/version conflict"
+          }
+        },
+        "x-requirement-id": "FR-009",
+        "x-implementation-status": "planned",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required for cookie-authenticated state changes."
+          }
+        ],
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/relief-requests": {
+      "get": {
+        "tags": [
+          "FR-013"
+        ],
+        "summary": "FR-013: Scoped. Draft contract; refine response schema before coding.",
+        "operationId": "get_api_v1_relief_requests",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          }
+        },
+        "x-requirement-id": "FR-013",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "FR-011"
+        ],
+        "summary": "FR-011: Coordinator. Draft contract; refine response schema before coding.",
+        "operationId": "post_api_v1_relief_requests",
+        "responses": {
+          "201": {
+            "description": "Resource created"
+          },
+          "409": {
+            "description": "State/version conflict"
+          }
+        },
+        "x-requirement-id": "FR-011",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required for cookie-authenticated state changes."
+          }
+        ]
+      }
+    },
+    "/api/v1/relief-requests/{id}": {
+      "patch": {
+        "tags": [
+          "FR-012"
+        ],
+        "summary": "FR-012: Coordinator. Draft contract; refine response schema before coding.",
+        "operationId": "patch_api_v1_relief_requests__id_",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "409": {
+            "description": "State/version conflict"
+          }
+        },
+        "x-requirement-id": "FR-012",
+        "x-implementation-status": "planned",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required for cookie-authenticated state changes."
+          }
+        ],
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/relief-requests/{id}/approve": {
+      "post": {
+        "tags": [
+          "FR-012"
+        ],
+        "summary": "FR-012: Coordinator. Draft contract; refine response schema before coding.",
+        "operationId": "post_api_v1_relief_requests__id__approve",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "409": {
+            "description": "State/version conflict"
+          }
+        },
+        "x-requirement-id": "FR-012",
+        "x-implementation-status": "planned",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required for cookie-authenticated state changes."
+          }
+        ],
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/assignments": {
+      "post": {
+        "tags": [
+          "FR-014"
+        ],
+        "summary": "FR-014: Coordinator. Draft contract; refine response schema before coding.",
+        "operationId": "post_api_v1_assignments",
+        "responses": {
+          "201": {
+            "description": "Resource created"
+          },
+          "409": {
+            "description": "State/version conflict"
+          }
+        },
+        "x-requirement-id": "FR-014",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignmentCreate"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required for cookie-authenticated state changes."
+          }
+        ]
+      }
+    },
+    "/api/v1/assignments/mine": {
+      "get": {
+        "tags": [
+          "FR-015"
+        ],
+        "summary": "FR-015: Volunteer. Draft contract; refine response schema before coding.",
+        "operationId": "get_api_v1_assignments_mine",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          }
+        },
+        "x-requirement-id": "FR-015",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/assignments/{id}/accept": {
+      "post": {
+        "tags": [
+          "FR-015"
+        ],
+        "summary": "FR-015: Assigned volunteer. Draft contract; refine response schema before coding.",
+        "operationId": "post_api_v1_assignments__id__accept",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "409": {
+            "description": "State/version conflict"
+          }
+        },
+        "x-requirement-id": "FR-015",
+        "x-implementation-status": "planned",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required for cookie-authenticated state changes."
+          }
+        ],
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignmentResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/assignments/{id}/decline": {
+      "post": {
+        "tags": [
+          "FR-015"
+        ],
+        "summary": "FR-015: Assigned volunteer. Draft contract; refine response schema before coding.",
+        "operationId": "post_api_v1_assignments__id__decline",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "409": {
+            "description": "State/version conflict"
+          }
+        },
+        "x-requirement-id": "FR-015",
+        "x-implementation-status": "planned",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required for cookie-authenticated state changes."
+          }
+        ],
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignmentResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/assignments/{id}/complete": {
+      "post": {
+        "tags": [
+          "FR-016"
+        ],
+        "summary": "FR-016: Assigned volunteer/coord. Draft contract; refine response schema before coding.",
+        "operationId": "post_api_v1_assignments__id__complete",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "409": {
+            "description": "State/version conflict"
+          }
+        },
+        "x-requirement-id": "FR-016",
+        "x-implementation-status": "planned",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required for cookie-authenticated state changes."
+          }
+        ],
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignmentResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/notifications": {
+      "get": {
+        "tags": [
+          "FR-019"
+        ],
+        "summary": "FR-019: Authenticated. Draft contract; refine response schema before coding.",
+        "operationId": "get_api_v1_notifications",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          }
+        },
+        "x-requirement-id": "FR-019",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/notifications/{id}/read": {
+      "patch": {
+        "tags": [
+          "FR-020"
+        ],
+        "summary": "FR-020: Owner. Draft contract; refine response schema before coding.",
+        "operationId": "patch_api_v1_notifications__id__read",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "404": {
+            "description": "Not found or hidden"
+          }
+        },
+        "x-requirement-id": "FR-020",
+        "x-implementation-status": "planned",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required for cookie-authenticated state changes."
+          }
+        ],
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/inventory": {
+      "get": {
+        "tags": [
+          "FR-021"
+        ],
+        "summary": "FR-021: Coordinator. Draft contract; refine response schema before coding.",
+        "operationId": "get_api_v1_inventory",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          }
+        },
+        "x-requirement-id": "FR-021",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "FR-021"
+        ],
+        "summary": "FR-021: Coordinator. Draft contract; refine response schema before coding.",
+        "operationId": "post_api_v1_inventory",
+        "responses": {
+          "201": {
+            "description": "Resource created"
+          }
+        },
+        "x-requirement-id": "FR-021",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required for cookie-authenticated state changes."
+          }
+        ]
+      }
+    },
+    "/api/v1/allocations": {
+      "post": {
+        "tags": [
+          "FR-022"
+        ],
+        "summary": "FR-022: Coordinator. Draft contract; refine response schema before coding.",
+        "operationId": "post_api_v1_allocations",
+        "responses": {
+          "201": {
+            "description": "Resource created"
+          },
+          "409": {
+            "description": "State/version conflict"
+          }
+        },
+        "x-requirement-id": "FR-022",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required for cookie-authenticated state changes."
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/users": {
+      "get": {
+        "tags": [
+          "FR-027"
+        ],
+        "summary": "FR-027: Admin. Draft contract; refine response schema before coding.",
+        "operationId": "get_api_v1_admin_users",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          }
+        },
+        "x-requirement-id": "FR-027",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/users/{id}/status": {
+      "patch": {
+        "tags": [
+          "FR-027"
+        ],
+        "summary": "FR-027: Admin. Draft contract; refine response schema before coding.",
+        "operationId": "patch_api_v1_admin_users__id__status",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          }
+        },
+        "x-requirement-id": "FR-027",
+        "x-implementation-status": "planned",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required for cookie-authenticated state changes."
+          }
+        ],
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      }
+    },
+    "/health/live": {
+      "get": {
+        "tags": [
+          "FR-029"
+        ],
+        "summary": "FR-029: Ops. Draft contract; refine response schema before coding.",
+        "operationId": "get_health_live",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          }
+        },
+        "x-requirement-id": "FR-029",
+        "x-implementation-status": "planned",
+        "security": []
+      }
+    },
+    "/health/ready": {
+      "get": {
+        "tags": [
+          "FR-029"
+        ],
+        "summary": "FR-029: Ops. Draft contract; refine response schema before coding.",
+        "operationId": "get_health_ready",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "503": {
+            "description": "Dependency not ready"
+          }
+        },
+        "x-requirement-id": "FR-029",
+        "x-implementation-status": "planned",
+        "security": []
+      }
+    },
+    "/metrics": {
+      "get": {
+        "tags": [
+          "FR-032"
+        ],
+        "summary": "FR-032: Private ops. Draft contract; refine response schema before coding.",
+        "operationId": "get_metrics",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          }
+        },
+        "x-requirement-id": "FR-032",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/auth/email/verify": {
+      "post": {
+        "tags": [
+          "FR-001"
+        ],
+        "summary": "FR-001: Guest. Draft contract; refine response schema before coding.",
+        "operationId": "post_api_v1_auth_email_verify",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-requirement-id": "FR-001",
+        "x-implementation-status": "planned",
+        "security": []
+      }
+    },
+    "/api/v1/auth/forgot-password": {
+      "post": {
+        "tags": [
+          "FR-003"
+        ],
+        "summary": "FR-003: Guest. Draft contract; refine response schema before coding.",
+        "operationId": "post_api_v1_auth_forgot_password",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "429": {
+            "description": "Rate limited"
+          }
+        },
+        "x-requirement-id": "FR-003",
+        "x-implementation-status": "planned",
+        "security": []
+      }
+    },
+    "/api/v1/auth/reset-password": {
+      "post": {
+        "tags": [
+          "FR-003"
+        ],
+        "summary": "FR-003: Guest. Draft contract; refine response schema before coding.",
+        "operationId": "post_api_v1_auth_reset_password",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-requirement-id": "FR-003",
+        "x-implementation-status": "planned",
+        "security": []
+      }
+    },
+    "/api/v1/volunteers/me": {
+      "get": {
+        "tags": [
+          "FR-005"
+        ],
+        "summary": "FR-005: Volunteer. Draft contract; refine response schema before coding.",
+        "operationId": "get_api_v1_volunteers_me",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          }
+        },
+        "x-requirement-id": "FR-005",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "FR-005"
+        ],
+        "summary": "FR-005: Volunteer. Draft contract; refine response schema before coding.",
+        "operationId": "patch_api_v1_volunteers_me",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-requirement-id": "FR-005",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required for cookie-authenticated state changes."
+          }
+        ]
+      }
+    },
+    "/api/v1/volunteers": {
+      "get": {
+        "tags": [
+          "FR-014"
+        ],
+        "summary": "FR-014: Coordinator. Draft contract; refine response schema before coding.",
+        "operationId": "get_api_v1_volunteers",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "x-requirement-id": "FR-014",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/organizations": {
+      "post": {
+        "tags": [
+          "FR-006"
+        ],
+        "summary": "FR-006: Admin. Draft contract; refine response schema before coding.",
+        "operationId": "post_api_v1_admin_organizations",
+        "responses": {
+          "201": {
+            "description": "Resource created"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "x-requirement-id": "FR-006",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required for cookie-authenticated state changes."
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/memberships": {
+      "post": {
+        "tags": [
+          "FR-006"
+        ],
+        "summary": "FR-006: Admin. Draft contract; refine response schema before coding.",
+        "operationId": "post_api_v1_admin_memberships",
+        "responses": {
+          "201": {
+            "description": "Resource created"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "x-requirement-id": "FR-006",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required for cookie-authenticated state changes."
+          }
+        ]
+      }
+    },
+    "/api/v1/assignments/{id}/reassign": {
+      "post": {
+        "tags": [
+          "FR-017"
+        ],
+        "summary": "FR-017: Coordinator. Draft contract; refine response schema before coding.",
+        "operationId": "post_api_v1_assignments__id__reassign",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "409": {
+            "description": "State/version conflict"
+          }
+        },
+        "x-requirement-id": "FR-017",
+        "x-implementation-status": "planned",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required for cookie-authenticated state changes."
+          }
+        ],
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/dashboard": {
+      "get": {
+        "tags": [
+          "FR-023"
+        ],
+        "summary": "FR-023: Authenticated. Draft contract; refine response schema before coding.",
+        "operationId": "get_api_v1_dashboard",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          }
+        },
+        "x-requirement-id": "FR-023",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/incidents/{id}/evidence": {
+      "post": {
+        "tags": [
+          "FR-026"
+        ],
+        "summary": "FR-026: Reporter+. Draft contract; refine response schema before coding.",
+        "operationId": "post_api_v1_incidents__id__evidence",
+        "responses": {
+          "201": {
+            "description": "Resource created"
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-requirement-id": "FR-026",
+        "x-implementation-status": "planned",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required for cookie-authenticated state changes."
+          }
+        ],
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/audit-events": {
+      "get": {
+        "tags": [
+          "FR-025"
+        ],
+        "summary": "FR-025: Admin. Draft contract; refine response schema before coding.",
+        "operationId": "get_api_v1_admin_audit_events",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "x-requirement-id": "FR-025",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/exports/incidents": {
+      "get": {
+        "tags": [
+          "FR-028"
+        ],
+        "summary": "FR-028: Coordinator. Draft contract; refine response schema before coding.",
+        "operationId": "get_api_v1_exports_incidents",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "x-requirement-id": "FR-028",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/privacy/requests": {
+      "post": {
+        "tags": [
+          "FR-030"
+        ],
+        "summary": "FR-030: Authenticated. Draft contract; refine response schema before coding.",
+        "operationId": "post_api_v1_privacy_requests",
+        "responses": {
+          "201": {
+            "description": "Resource created"
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-requirement-id": "FR-030",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required for cookie-authenticated state changes."
+          }
+        ]
+      }
+    },
+    "/api/v1/relief-requests/{id}/close": {
+      "patch": {
+        "tags": [
+          "FR-012"
+        ],
+        "summary": "FR-012: Coordinator. Draft contract; refine response schema before coding.",
+        "operationId": "patch_api_v1_relief_requests__id__close",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "409": {
+            "description": "State/version conflict"
+          }
+        },
+        "x-requirement-id": "FR-012",
+        "x-implementation-status": "planned",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required for cookie-authenticated state changes."
+          }
+        ],
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/allocations/{id}/release": {
+      "post": {
+        "tags": [
+          "FR-022"
+        ],
+        "summary": "FR-022: Coordinator. Draft contract; refine response schema before coding.",
+        "operationId": "post_api_v1_allocations__id__release",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "409": {
+            "description": "State/version conflict"
+          }
+        },
+        "x-requirement-id": "FR-022",
+        "x-implementation-status": "planned",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required for cookie-authenticated state changes."
+          }
+        ],
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/incidents/{id}/map": {
+      "get": {
+        "tags": [
+          "FR-024"
+        ],
+        "summary": "FR-024: Scoped. Draft contract; refine response schema before coding.",
+        "operationId": "get_api_v1_incidents__id__map",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "x-requirement-id": "FR-024",
+        "x-implementation-status": "planned",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/users/{id}/roles": {
+      "patch": {
+        "tags": [
+          "FR-027"
+        ],
+        "summary": "FR-027: Admin. Draft contract; refine response schema before coding.",
+        "operationId": "patch_api_v1_admin_users__id__roles",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "x-requirement-id": "FR-027",
+        "x-implementation-status": "planned",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required for cookie-authenticated state changes."
+          }
+        ],
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "sessionCookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "rdrvms.sid",
+        "description": "Placeholder cookie name; server session auth, CSRF required on mutations."
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "object",
+            "required": [
+              "code",
+              "message",
+              "requestId"
+            ],
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "requestId": {
+                "type": "string"
+              },
+              "details": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      },
+      "Incident": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "type",
+          "district",
+          "status",
+          "version"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "district": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "UNVERIFIED",
+              "VERIFIED",
+              "REJECTED",
+              "ACTIVE",
+              "RESOLVED"
+            ]
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      },
+      "ReliefRequest": {
+        "type": "object",
+        "required": [
+          "id",
+          "incidentId",
+          "category",
+          "quantity",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "incidentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "category": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "unit": {
+            "type": "string"
+          },
+          "priority": {
+            "enum": [
+              "LOW",
+              "MEDIUM",
+              "HIGH",
+              "CRITICAL"
+            ]
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "Assignment": {
+        "type": "object",
+        "required": [
+          "id",
+          "reliefRequestId",
+          "volunteerId",
+          "status",
+          "version"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reliefRequestId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "volunteerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "enum": [
+              "PENDING",
+              "ACCEPTED",
+              "DECLINED",
+              "IN_PROGRESS",
+              "COMPLETED",
+              "CANCELLED"
+            ]
+          },
+          "version": {
+            "type": "integer"
+          }
+        }
+      },
+      "Notification": {
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "createdAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "readAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        }
+      },
+      "IncidentCreate": {
+        "type": "object",
+        "required": [
+          "title",
+          "type",
+          "district",
+          "description",
+          "approximateLocation"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 160
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "FLOOD",
+              "LANDSLIDE",
+              "STORM",
+              "FIRE",
+              "OTHER"
+            ]
+          },
+          "district": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 3000
+          },
+          "approximateLocation": {
+            "type": "object",
+            "required": [
+              "lat",
+              "lon"
+            ],
+            "properties": {
+              "lat": {
+                "type": "number",
+                "minimum": -90,
+                "maximum": 90
+              },
+              "lon": {
+                "type": "number",
+                "minimum": -180,
+                "maximum": 180
+              }
+            }
+          }
+        }
+      },
+      "AssignmentCreate": {
+        "type": "object",
+        "required": [
+          "reliefRequestId",
+          "volunteerId",
+          "expectedRequestVersion",
+          "idempotencyKey"
+        ],
+        "properties": {
+          "reliefRequestId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "volunteerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expectedRequestVersion": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "VerificationCommand": {
+        "type": "object",
+        "required": [
+          "decision",
+          "reason",
+          "expectedVersion"
+        ],
+        "properties": {
+          "decision": {
+            "enum": [
+              "VERIFIED",
+              "REJECTED"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 5
+          },
+          "expectedVersion": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      },
+      "AssignmentResponse": {
+        "type": "object",
+        "required": [
+          "expectedVersion"
+        ],
+        "properties": {
+          "expectedVersion": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "FR-007",
+      "description": "Incidents"
+    }
+  ]
+}

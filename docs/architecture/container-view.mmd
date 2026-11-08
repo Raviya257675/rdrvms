@@ -1,0 +1,7 @@
+flowchart TD
+  U[Reporter / Volunteer / Coordinator / Admin] -->|HTTPS| N[Nginx + React SPA]
+  N -->|/api and /socket.io| A[Express API + Socket.IO]
+  A -->|Prisma transactions| DB[(PostgreSQL)]
+  A -->|authenticated delivery| U
+  A -->|structured metrics and logs| OPS[Private observability]
+  DB -->|encrypted backup| B[(Private backup store)]

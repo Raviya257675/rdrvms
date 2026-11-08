@@ -1,0 +1,17 @@
+name: Documentation quality (active)
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  validate-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (pinned SHA)
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Validate requirements, tests and draft API
+        run: python3 scripts/validate_pack.py
+      - name: Unit test documentation validator
+        run: python3 -m unittest discover -s scripts -p 'test_*.py'

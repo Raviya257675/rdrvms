@@ -1,0 +1,34 @@
+# REFERENCE ONLY: this will not work until web/api Dockerfiles and code exist.
+# Preserve this as a future Compose design template; not an implemented deployment.
+services:
+  web:
+    build: ../apps/web
+    depends_on:
+      api: {condition: service_healthy}
+    ports: ["127.0.0.1:8080:80"]
+  api:
+    build: ../apps/api
+    environment:
+      DATABASE_URL: ${DATABASE_URL:?configured secret required}
+    depends_on:
+      db: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "node", "healthcheck.js"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?missing}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?missing}
+      POSTGRES_DB: ${POSTGRES_DB:?missing}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+volumes:
+  postgres_data:

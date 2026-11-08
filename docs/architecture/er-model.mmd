@@ -1,0 +1,15 @@
+erDiagram
+  USER ||--o{ MEMBERSHIP : has
+  ORGANIZATION ||--o{ MEMBERSHIP : includes
+  USER ||--o| VOLUNTEER_PROFILE : optionally_has
+  USER ||--o{ INCIDENT : reports
+  INCIDENT ||--o{ RELIEF_REQUEST : contains
+  RELIEF_REQUEST ||--o{ ASSIGNMENT : includes
+  USER ||--o{ ASSIGNMENT : volunteers_for
+  ORGANIZATION ||--o{ INVENTORY_ITEM : maintains
+  INVENTORY_ITEM ||--o{ ALLOCATION : allocated_to
+  RELIEF_REQUEST ||--o{ ALLOCATION : receives
+  USER ||--o{ NOTIFICATION : receives
+  USER ||--o{ SESSION : authenticates
+  USER ||--o{ AUDIT_EVENT : performs
+  INCIDENT ||--o{ OUTBOX_EVENT : emits

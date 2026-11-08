@@ -1,0 +1,12 @@
+# NOT ACTIVE — convert to .github/workflows/app-ci.yml after initializing Node workspaces.
+# Review action SHAs, package scripts, PostgreSQL fixtures and permissions before activation.
+name: Future application CI (illustrative, DO NOT ACTIVATE YET)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'Placeholder only - create package lockfile, tests and secure services first.'
