@@ -1,0 +1,19 @@
+# Review handoff — supervisor, security, backend/product and API
+
+Verdict: **READY FOR HUMAN SIGN-OFF** on the proposed reconciliation package; **implementation/migrations NOT AUTHORIZED**. Backend/product selected the flexible scoped architecture as preferred direction through Master Prompt 03A.2; this is the only supplied selection evidence. No named reviewer, signature, approval date or review URL is recorded.
+
+Read [reconciliation-summary.md](reconciliation-summary.md), then use [approval-record.md](approval-record.md) as the single 18-row approval record. [Source amendments](source-amendments.md) contains C-01–C-11 and exact proposed authoritative edits. [Security parameters](security-parameters.md) lists unsigned values; [identity/scope readiness](identity-scope-readiness.md) proposes a 12-entity first slice. Catalogue/ER/constraints/transactions preserve the broader 23-entity candidate and six deferred P1 entities.
+
+| Reviewer role | Concrete review requested | Required output / current status |
+|---|---|---|
+| Supervisor / constitutional owner | C-11 owner/org separation and separate global account-security exception; FR-027 vs UC-08 actor conflict; P0 source changes, constitutional/agent instruction review | Approve exact A01–A04 wording and D-S03/D-S18 scope or request corrections; name/date/evidence blank, PENDING |
+| Independent security reviewer | No implicit global/admin inheritance; E23 grant issuance/target limits; session/hash/token/CSRF/cookie/env proposals; revocation races; append-only role separation and DBA limit | Independent review of D-S01/02/03/04/05/12/15/18 and SC-35–40; exact accepted values/library compatibility and deviations; PENDING |
+| Backend/product lead | Confirm multi-role N:M model, grant/routing boundaries, bootstrap/handover and first-slice scope; retain unresolved workflow/public data decisions; approve field/constraint/transaction proposal | Preferred direction already selected; final policy/schema/source-change sign-off still PENDING; D-S06–11/14/16/17 remain individually open |
+| Frontend/API teammate | Owner/org/global context on every route; safe DTOs, membership context selection, cookie/CSRF flow and no storage of bearer tokens; missing start/complete/close and Decimal/cursor contracts | Review A06/A08, D-S05/11/14/16; do not implement UI/API against unsigned contracts; PENDING |
+| QA + privacy/ops | Complete negative/race partitions, no weakened IDs/assertions, audit privileges/retention classes, fictional manifest and migration/recovery evidence requirements | Review planned SC cases and isolated future RED/GREEN strategy; durations/rights and actual migration remain PENDING |
+
+Review order: sign the authority/actor boundary and exact security parameters, reconcile authoritative sources through a separately authorized documentation change, then approve the exact first slice's spec/tests/SQL/target/recovery plan. Only a later explicit implementation instruction permits tests-first schema/service work. No migration authorization follows from accepting the design record.
+
+Open corrections to decide, not agent-selected approvals: reporter drafts, incident reviewer capability, eligible parent/request states, assignment progress and request confirmation, multiple volunteers, public aggregation/coarsening, intake routing, unit taxonomy, inbox recovery/retention and Decimal serialization. Use the amendment matrix to accept/revise each rather than approving all by implication. Original D-001–D-012 remain OPEN until signed updates are made to their register.
+
+Current evidence and the full changed-file inventory are in [evidence.md](evidence.md). Documentation checks establish structural consistency only; no PostgreSQL/security/session/migration test or completed threat assessment is claimed. Synthetic academic data only; no real mail/SMS/user pilot, external contact or deployment. No source amendment, commit or migration is performed by this handoff.
