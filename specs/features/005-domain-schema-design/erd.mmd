@@ -1,0 +1,185 @@
+erDiagram
+  DISTRICTS {
+    uuid id PK
+    varchar code UK
+    boolean active
+  }
+  USERS {
+    uuid id PK
+    varchar email_normalized UK
+    varchar status
+    integer auth_version
+  }
+  ACCOUNT_ROLES {
+    uuid user_id PK,FK
+    varchar role PK
+  }
+  ORGANIZATIONS {
+    uuid id PK
+    varchar code UK
+    varchar status
+  }
+  ORGANIZATION_DISTRICTS {
+    uuid organization_id PK,FK
+    uuid district_id PK,FK
+    boolean active
+  }
+  MEMBERSHIPS {
+    uuid id PK
+    uuid user_id FK
+    uuid organization_id FK
+    uuid granted_by FK
+    varchar role
+    varchar status
+  }
+  MEMBERSHIP_DISTRICTS {
+    uuid membership_id PK,FK
+    uuid district_id PK,FK
+    uuid organization_id FK
+    boolean active
+  }
+  VOLUNTEER_PROFILES {
+    uuid user_id PK,FK
+    uuid home_district_id FK
+    boolean available
+    integer capacity
+    integer version
+  }
+  SKILLS {
+    uuid id PK
+    varchar code UK
+  }
+  VOLUNTEER_SKILLS {
+    uuid user_id PK,FK
+    uuid skill_id PK,FK
+  }
+  UNITS {
+    uuid id PK
+    varchar code UK
+    boolean fractional_allowed
+  }
+  EMAIL_VERIFICATION_TOKENS {
+    uuid id PK
+    uuid user_id FK
+    bytea token_hash UK
+    timestamptz expires_at
+  }
+  SESSIONS {
+    uuid id PK
+    uuid user_id FK
+    bytea token_hash UK
+    integer user_auth_version
+    timestamptz expires_at
+  }
+  INCIDENTS {
+    uuid id PK
+    uuid organization_id FK
+    uuid district_id FK
+    uuid reporter_id FK
+    uuid reviewed_by FK
+    varchar status
+    integer version
+  }
+  RELIEF_REQUESTS {
+    uuid id PK
+    uuid incident_id FK
+    uuid organization_id FK
+    uuid unit_id FK
+    uuid created_by FK
+    uuid approved_by FK
+    uuid closed_by FK
+    numeric quantity
+    varchar status
+    integer version
+  }
+  REQUEST_SKILLS {
+    uuid relief_request_id PK,FK
+    uuid skill_id PK,FK
+  }
+  ASSIGNMENTS {
+    uuid id PK
+    uuid organization_id FK
+    uuid relief_request_id FK
+    uuid volunteer_id FK
+    uuid coordinator_id FK
+    uuid volunteer_membership_id FK
+    uuid coordinator_membership_id FK
+    varchar status
+    integer version
+  }
+  NOTIFICATION_STREAMS {
+    uuid recipient_id PK,FK
+    bigint last_sequence
+    bigint retention_floor
+  }
+  NOTIFICATIONS {
+    uuid id PK
+    uuid recipient_id FK
+    uuid organization_id FK
+    bigint sequence
+    uuid event_key
+    timestamptz read_at
+  }
+  OUTBOX_EVENTS {
+    uuid id PK
+    uuid notification_id FK,UK
+    integer attempts
+    timestamptz processed_at
+  }
+  AUDIT_EVENTS {
+    uuid id PK
+    uuid actor_id FK
+    uuid organization_id FK
+    varchar target_type
+    uuid target_id
+    uuid request_id
+  }
+  IDEMPOTENCY_RECORDS {
+    uuid id PK
+    uuid actor_id FK
+    uuid organization_id FK
+    uuid key
+    uuid result_id
+  }
+
+  USERS ||--o{ ACCOUNT_ROLES : has_personal_capability
+  USERS ||--o{ MEMBERSHIPS : receives_scoped_role
+  USERS ||--o{ MEMBERSHIPS : grants_role
+  ORGANIZATIONS ||--o{ MEMBERSHIPS : scopes
+  ORGANIZATIONS ||--o{ ORGANIZATION_DISTRICTS : operates_in
+  DISTRICTS ||--o{ ORGANIZATION_DISTRICTS : includes_org
+  MEMBERSHIPS ||--o{ MEMBERSHIP_DISTRICTS : has_explicit_grant
+  ORGANIZATION_DISTRICTS ||--o{ MEMBERSHIP_DISTRICTS : bounds_grant
+  USERS ||--o| VOLUNTEER_PROFILES : optionally_has
+  DISTRICTS |o--o{ VOLUNTEER_PROFILES : coarse_home
+  VOLUNTEER_PROFILES ||--o{ VOLUNTEER_SKILLS : claims
+  SKILLS ||--o{ VOLUNTEER_SKILLS : classifies
+  USERS ||--o{ EMAIL_VERIFICATION_TOKENS : verifies_with
+  USERS ||--o{ SESSIONS : authenticates_with
+  USERS ||--o{ INCIDENTS : reports
+  USERS |o--o{ INCIDENTS : reviews
+  ORGANIZATIONS ||--o{ INCIDENTS : owns
+  DISTRICTS ||--o{ INCIDENTS : locates_coarsely
+  ORGANIZATION_DISTRICTS ||--o{ INCIDENTS : constrains_intake
+  INCIDENTS ||--o{ RELIEF_REQUESTS : has_needs
+  ORGANIZATIONS ||--o{ RELIEF_REQUESTS : owns
+  UNITS ||--o{ RELIEF_REQUESTS : measures
+  USERS ||--o{ RELIEF_REQUESTS : creates
+  USERS |o--o{ RELIEF_REQUESTS : approves
+  USERS |o--o{ RELIEF_REQUESTS : closes
+  RELIEF_REQUESTS ||--o{ REQUEST_SKILLS : requires
+  SKILLS ||--o{ REQUEST_SKILLS : specifies
+  RELIEF_REQUESTS ||--o{ ASSIGNMENTS : receives_work
+  ORGANIZATIONS ||--o{ ASSIGNMENTS : owns
+  VOLUNTEER_PROFILES ||--o{ ASSIGNMENTS : commits_to
+  USERS ||--o{ ASSIGNMENTS : coordinates
+  MEMBERSHIPS ||--o{ ASSIGNMENTS : volunteer_scope
+  MEMBERSHIPS ||--o{ ASSIGNMENTS : coordinator_scope
+  USERS ||--|| NOTIFICATION_STREAMS : provisions_atomically
+  NOTIFICATION_STREAMS ||--o{ NOTIFICATIONS : orders_for_owner
+  ORGANIZATIONS |o--o{ NOTIFICATIONS : optionally_scopes
+  NOTIFICATIONS ||--o| OUTBOX_EVENTS : has_publication_intent
+  USERS |o--o{ AUDIT_EVENTS : acts_unless_system
+  ORGANIZATIONS |o--o{ AUDIT_EVENTS : optionally_scopes
+  USERS ||--o{ IDEMPOTENCY_RECORDS : owns_replay_key
+  ORGANIZATIONS ||--o{ IDEMPOTENCY_RECORDS : bounds_replay

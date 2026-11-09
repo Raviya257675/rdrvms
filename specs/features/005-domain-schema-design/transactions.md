@@ -1,0 +1,89 @@
+# Transaction, concurrency and recovery proposal
+
+Status: PROPOSED, subject to human approval. No database transactions in this document were executed. Trace: BR-01 through BR-09, FR-001/002/008/009/011/012/014–022/025/027/031, NFR-004/005/007/010/022/025.
+
+## Shared consistency protocol
+
+Default proposal: short PostgreSQL READ COMMITTED transactions with explicit row locks, version predicates, unique constraints and bounded retries for recognized transient conflicts. SERIALIZABLE with retry is an alternative, not a replacement for deterministic business rules. Count-then-insert outside the common lock protocol is forbidden. All runtime write paths for the same invariant must use the same protocol; direct SQL from privileged maintenance remains a reviewed administrative boundary.
+
+Never do network I/O, password hashing, file scanning, socket emission or human waiting inside a domain transaction. Prepare validated input and expensive hash work outside; recheck current authorization/versions inside. Current driver acquisition/query/statement bounds remain unchanged (feature 004: 1 second each). Future transaction/lock time budgets must fit those bounds and API latency targets; do not silently increase the pool of 5 or fixed query limits. Proposed retry cap is two attempts within the remaining request budget, not an infinite loop. Unique/stale-version/business conflicts normally return a safe conflict rather than blind retry.
+
+Mutating operations serialize authorization-sensitive changes with user and grant updates. Lock acquisition order for every applicable writer:
+
+1. Scoped idempotency key/candidate row, when used (no other transaction obtains it after acquiring domain locks).
+2. Relevant users in UUID order (actor, target volunteer and any account being changed); session validity rechecked here.
+3. Organizations in UUID order, relevant organization/district mappings, memberships and membership district grants in deterministic key order. Role/grant revocation follows this same parent order.
+4. Volunteer profiles in user-ID order, including both volunteers for any later reassignment.
+5. Incidents, then relief requests, then P1 inventory items, then assignments/allocations, each sorted by ID.
+6. Notification streams in recipient-ID order; append notifications, outbox and audit, finalize idempotency result, commit.
+
+Not every workflow locks every table. References used to discover parent IDs may be read before locking, but must be immutable or revalidated after acquiring the proper locks. If closure/reassignment discovers additional affected volunteers after obtaining parent locks, roll back and retry from the beginning with the complete ordered profile set; do not acquire earlier-order locks late. Never lock child first then parent. All capacity-affecting assignment transitions and profile edits acquire profile lock; all scope changes acquire their parent user/org/membership locks. Database FK key locks and multi-row operations still require real deadlock testing; deterministic order reduces risk, not a proof of deadlock absence. Map deadlock/serialization/timeouts to sanitized failures; retry only from the transaction beginning with no external side effects.
+
+Membership lookup and role evaluation are mandatory despite composite FKs. Current account status, verified email, session expiry/revocation/auth_version, active org/district/mapping, correct membership role and district grant, target ownership and state are independently evaluated. Read-only responses use current DB-backed policies; a concurrent revocation may linearize after an already-authorized read. Mutations are serialized with the relevant revocation locks. Sockets revalidate on connection, room join and sensitive emit, and disconnect/reconcile on next server validation after revocation.
+
+## Critical workflow boundaries
+
+| Workflow | Atomic unit and guards | Failure/replay behavior |
+|---|---|---|
+| Registration | Unique normalized email, consent/version, UNVERIFIED user, approved personal role, notification stream, verification-token digest and metadata-safe audit | No role elevation from body; duplicate email response policy generic; entire insert set rolls back on any failure. No external provider called before commit |
+| Email verification | Lock user/token, match current email, check unconsumed/unexpired token, consume token, set email_verified_at/status and audit | Two consumers: one state transition only; old email token cannot verify changed address; expiry checked at execution time |
+| Login/rotation/logout | Validate password securely outside transaction, then lock/recheck account/hash version; create or rotate digest session; logout revokes current session and records safe audit | Session token only issued after commit; neither raw token nor digest logged. Rotation revokes old token; failure does not issue a usable unpersisted cookie |
+| Suspension/privilege revoke | Lock users/grants, authorize the exact effect: org administrators may revoke approved in-scope grants; global account status authority is blocked pending D-S03. Once approved, status/grant change, auth_version increment, session revocation, audit and required notices are atomic | Access denied on next validation; never automatically erase active assignments. Org scope must not silently authorize a global suspension. Self-lockout/handover rules require approval |
+| Incident intake | Validate/coarsen location; resolve approved owner org/district rule, lock scope, insert UNVERIFIED incident+audit and required staff inbox/outbox | No client-provided verified flag; ambiguous routing fails safely pending an explicit choice, never assigns an arbitrary org |
+| Verify/reject/state change | Lock actor scope and incident; version/state guard, persist decision/reason/reviewer/time, append audit and required reporter/coordinator notices | Stale version 409 with only authorized current DTO; noncoordinator/wrong-org cannot cause audit/state leakage through error response |
+| Create/approve request | Lock parent incident and request; active verified-parent interpretation pending C-04; validate quantity/unit/category and scope; update version/metadata and audit/notices | No approved request on unverified/rejected/resolved parent; concurrent resolve/approve uses same incident lock |
+| Fulfill/cancel request or resolve incident | Lock affected profiles then parent/children according to common order; recheck discovered child set; explicit coordinator reason, no open/active work silently abandoned | Proposed fulfillment requires commitments terminal and human confirmation; cancel pending assignments atomically, block accepted/in-progress work until approved handover; incident resolve blocked with open needs. Parent lock also blocks new child writes |
+| Create assignment | Re-authorize and claim key; lock users/scope/profile/incident/request; request version/status, skills, available active volunteer and district grant; count all-org active commitments under profile lock; create PENDING assignment+audit+owner/coordinator inbox/outbox+replay result | Partial pair UQ and locked capacity both enforce; any audit/inbox/outbox failure rolls back assignment; unavailable/suspended/wrong-org/stale state produces zero partial effects |
+| Accept/decline/start/complete | Lock users/scope/profile/parents/assignment; verify target for accept/decline, expected version and allowed transition; update times/reason/version and parent progress where needed; audit/notices/replay | Same pending reservation already counts capacity, acceptance never allocates a second slot. Concurrent accept/decline has one winner. API/start/confirmation gaps C-06 remain approval blockers |
+| Edit availability/capacity/skills | Lock owner and profile; validate self-edit field allowlist; count active global commitments before lowering capacity; version update and audit | Capacity below existing reservations rejected; unavailable blocks new work, not existing reservation. Active work not silently deleted by skill/profile edits |
+| P1 inventory reserve | Lock scoped actor/parent request/item; validate matching org/unit/category, positive exact quantity and open parent; conditional decrement available>=requested, insert RESERVED allocation+audit+notices/outbox+replay | Last-stock race: at most one succeeds; item update and allocation cannot commit independently |
+| P1 release/consume | Lock parent/item/allocation in common order; expected version/state; RESERVED→RELEASED adds quantity once, DISPATCHED→CONSUMED does not add; audit and notices atomic | Duplicate release returns replay result or conflict, no second credit. No release from CONSUMED; physical returns from DISPATCHED require a separately approved workflow |
+| P1 recovery | Lock user and valid one-use reset digest; update password hash, consume token, increment auth_version, revoke sessions, audit/notices | No account enumeration; old sessions/tokens fail; failed transaction leaves prior credentials/state intact |
+| Sensitive access | Authenticate and scope exact fields, append safe actor/target/request audit before releasing restricted data when required | If mandatory access audit cannot persist, fail closed for that sensitive read; no location value or full returned record in audit |
+
+## Assignment capacity and request consistency
+
+Active reservation set is PENDING, ACCEPTED and IN_PROGRESS. Partial pair uniqueness prevents only duplicate volunteer/request work; it does **not** enforce global volunteer capacity. Lock volunteer_profiles, count that volunteer's active assignments across every org, then compare against capacity before insertion. Different requests and organizations contend on the same profile lock. Reducing capacity, terminal transitions, revoking a volunteer role and any later reassignment use the same lock discipline. Do not maintain a second active_count cache until measurement justifies another integrity mechanism.
+
+Request quantity is expressed in business units and is not an assignment-count limit. The proposal permits multiple different volunteers while the need is APPROVED/IN_PROGRESS; if product chooses one volunteer per request, that requires an additional active-request uniqueness rule and API/state revision (C-07/D-S09). Fulfillment is an explicit coordinator action after valid work completion, not an automatic sum of volunteer counts. P1 supply quantity accounting is a separate decision from volunteer capacity.
+
+## Idempotency protocol
+
+Scope key: actor + org + operation + caller UUID key. Canonical command digest includes target, intended action, normalized fields and expected versions. Different payload with same scoped key returns conflict. Same key/body returns the same logical result and does not create another audit/notification/allocation. Recheck current authorization before exposing any previous result; revocation is not bypassed by replay.
+
+Within one transaction, claim the unique scoped record with a candidate success result identity/envelope; perform all guards and domain writes; finalize its minimal response before commit. Candidate content is not visible to other transactions and any failure rolls back the claim. A competing insert waits or conflicts: roll back the losing transaction, read the winner in a fresh transaction, compare digest and authorization, then return the winner. Do not catch a PostgreSQL unique violation and continue issuing queries in the same aborted transaction. No independently committed IN_PROGRESS row or detached claim can strand a key.
+
+If network response is lost after commit, retry retrieves persisted success. If process dies before commit, DB rolls back all effects. No TTL is assumed for replay identities; D-S17 must reconcile bounded storage with the promised replay window before any purge. Active-pair uniqueness alone cannot prevent a duplicate command after the original assignment is terminal. Existing AssignmentResponse lacks an idempotency key: approve the header/body convention before implementing idempotent transition replay; otherwise only stale-version conflict semantics are presently specified by that API.
+
+## Inbox reconciliation that survives late commits
+
+`created_at,id` ordering is deterministic for resource browsing but not commit ordering. Example: T1 inserts with an early timestamp and pauses; T2 commits a later row; client advances timestamp cursor; T1 commits behind it and would be missed. PostgreSQL sequence values alone have the same allocation-versus-commit problem.
+
+Proposed algorithm: writers lock each recipient's notification_stream row in sorted recipient order, increment last_sequence transactionally, insert that sequence on notifications and hold the stream lock through commit. A later writer for that recipient cannot allocate/commit sequence n+1 before n commits or rolls back. All recipients' required notifications and domain/audit/outbox state remain one transaction; no sequence is reserved in a detached transaction.
+
+REST recovery for the authenticated owner binds a cursor to that owner and filters. On the first page, capture a committed last_sequence as a high-water mark, then fetch `cursor_sequence < sequence <= high_water` ordered ascending with a bounded limit. Read subsequent pages with the same high-water; advance only to the last item actually returned. A new polling window uses the new last_sequence. Read/ack changes do not alter sequence. Normal inbox browsing can retain LLD's created_at,id order, but the recovery cursor must be documented separately before the endpoint is implemented.
+
+If approved retention later removes older entries, atomically advance retention_floor and return an explicit resync-required response for a cursor below the floor; perform a full authoritative assignments/inbox refresh. No purge is authorized now. Revoked-scope items become neutral owner-only tombstones at their existing sequence, so filtering cannot hide a gap or expose target details. The counter row adds per-recipient contention; D-S11 considers bounded overlap-and-deduplicate queries as a cheaper alternative, with weaker guarantees unless a true transaction-age bound is proven.
+
+## Outbox worker and failure handling
+
+One worker may run inside the modular monolith. Poll a bounded eligible batch, claim rows under a short transaction using row locks/lease token and expiry, commit claim, emit outside transaction, then mark processed only if lease token still matches. `FOR UPDATE SKIP LOCKED` is suitable for competing queue claimers; it is not a consistent view for domain correctness. [PostgreSQL 17 SELECT](https://www.postgresql.org/docs/17/sql-select.html).
+
+If worker crashes before emit, lease expiry permits retry. If it crashes after emit and before marking, repeated eventId may be emitted; clients refetch/deduplicate and durable notification UQs prevent new inbox rows. A lease claimant that lost its lease cannot mark another worker's claim processed. attempts/backoff are bounded; exhausted rows remain failed/reviewable, not silently deleted. Safe error codes only, no driver error text/payload logging. REST correctness is independent of publication success or socket acknowledgements. Reauthorize owner rooms immediately before emit; never cache role grants as permanent authority.
+
+PostgreSQL row locks last until the owning transaction ends, so the proposed serialization requires every relevant writer to hold the selected locks through commit/rollback. It does not require a new broker or distributed lock service. [PostgreSQL 17 locking](https://www.postgresql.org/docs/17/explicit-locking.html).
+
+## Failure matrix and operational limits
+
+| Failure point | Required persistent outcome |
+|---|---|
+| Before commit, including audit/notices failing | Zero acknowledged partial domain state; entire transaction rolled back |
+| Commit succeeds, HTTP response lost | Replayed command returns persisted result after reauthorization |
+| API restart after 2xx | Domain/audit/inbox/outbox/replay rows remain consistent and retrievable |
+| Socket outage/duplicate/reordering | No lost authoritative state; REST and stable event IDs reconcile |
+| Worker lease expires/retry cap reached | No double durable effect; pending/failed publication remains inspectable |
+| Concurrent suspension/capacity edit | Mutating command linearizes before change or fails its recheck; no stale grant/capacity success afterward |
+| DB unavailable/lock budget exceeded | Safe failure/503 or conflict as specified, no indefinite retries or credential-bearing errors |
+| Retention cursor expires | Explicit resync, not a falsely complete notification history |
+
+Health readiness remains SELECT-only connectivity, not proof that an approved migration set or domain worker is present. Any future schema-version/worker readiness gate needs its own reviewed contract. This design preserves the implemented shutdown order: drain HTTP then disconnect once, with the retained overall failure deadline; a future worker must stop claiming and finish/abandon leases before disconnect within that same bound.

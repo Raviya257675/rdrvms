@@ -1,0 +1,61 @@
+Requirement_ID,Priority,Phase,Entities,Design_responsibility,Acceptance_IDs,Decision_refs,Status
+FR-001,P0,MVP,users;account_roles;email_verification_tokens;notification_streams,Unique canonical email;consent version/time;unverified account;one-use verification digest;atomic account provisioning,AT-001,D-S01;D-S04,Proposed
+FR-002,P0,MVP,users;sessions,Persist digest sessions;idle/absolute expiry;rotation;logout revocation,AT-002,D-012;D-S05;C-11,Proposed pending identity scope
+FR-003,P1,P1,password_reset_tokens;users;sessions,Single-use expiring reset digest;atomic password change and session revocation,AT-003,D-S04;D-S05,Proposed
+FR-004,P0,MVP,account_roles;organizations;organization_districts;memberships;membership_districts;users;sessions,Current session and object/owner/org/district/role checks;composite scope foreign keys,AT-004;SEC-001,D-S01;D-S02;D-S03;C-11,Proposed pending identity scope
+FR-005,P0,MVP,volunteer_profiles;districts;skills;volunteer_skills,Self-edit allowlist;coarse home region;availability;capacity and skill links,AT-005,D-S08;D-S09,Proposed
+FR-006,P1,MVP scope data;P1 management,organizations;organization_districts;memberships;membership_districts;audit_events,P0 scope dependencies bootstrapped fictionally;admin management interface remains P1,AT-006,D-S03;D-S18,Proposed
+FR-007,P0,MVP with P1 optional evidence,incidents;districts;organization_districts;evidence_files,Registered reporter;coarsened approximate point;server report time;UNVERIFIED intake;optional evidence deferred,AT-007,D-002;D-S06;D-S07;D-011,Proposed
+FR-008,P0,MVP,incidents;memberships;membership_districts;audit_events,Scoped human review;decision/reviewer/reason/time;no client verification flag,AT-008,D-003;D-S03;C-03,Proposed
+FR-009,P0,MVP,incidents;audit_events,Versioned state transitions;block inconsistent parent resolution;audited history,AT-009,C-04;C-05;D-S14,Proposed
+FR-010,P0,MVP,incidents;districts,Scoped filter indexes;stable bounded keyset board;separate public aggregate query,AT-010,D-S07,Proposed
+FR-011,P0,MVP,relief_requests;incidents;units,Positive quantity;exact unit;verified parent lock;creation actor conflict remains open,AT-011,C-02;C-04;D-S08,Proposed
+FR-012,P0,MVP,relief_requests;assignments;audit_events,Approval/closure/cancel actor and time;reason;parent/child transaction guard,AT-012,C-02;C-06;D-S14,Proposed
+FR-013,P0,MVP,incidents;relief_requests,Public safe fulfillment aggregates;no private identities/narrative/precise point;DTO and query authorization,AT-013,D-005;D-S07,Proposed
+FR-014,P0,MVP,assignments;volunteer_profiles;volunteer_skills;request_skills;memberships;membership_districts;relief_requests,Active eligible scoped volunteer;skills subset;global capacity;request/parent state lock,AT-014,D-S02;D-S08;D-S09;C-07,Proposed
+FR-015,P0,MVP,assignments;users;sessions,Only target volunteer responds;reason on decline;version/state predicates,AT-015,D-S09;D-S14,Proposed
+FR-016,P0,MVP,assignments;volunteer_profiles;idempotency_records;audit_events,Active pair uniqueness;all-org profile lock/count;valid transitions;replay safety,AT-016;NF-004;NF-022,D-S09;D-S17,Proposed
+FR-017,P1,P1 assignment extension,assignments;notifications;outbox_events;audit_events,Proposed predecessor and due-time extension;atomic cancel/replacement after approved timeout policy,AT-017,D-S14,Proposed
+FR-018,P0,MVP,notifications;notification_streams;outbox_events,Durable owner inbox and publication intent in same domain transaction before any emit,AT-018,D-S11,Proposed
+FR-019,P0,MVP,notification_streams;notifications;outbox_events,Commit-ordered per-owner sequence;high-water recovery;late-commit and expired-cursor handling,AT-019,D-S11,Proposed
+FR-020,P0,MVP,notifications,Owner plus current scope;monotonic read marker;no other-user read/ack,AT-020,D-S11,Proposed
+FR-021,P1,P1,inventory_items;organizations;units,Org-owned SKU and nonnegative exact available balance;unit policy,AT-021,D-S10;D-S08,Proposed
+FR-022,P1,P1,allocations;inventory_items;relief_requests;idempotency_records;audit_events,Same-org/unit/category atomic reserve/release;no stock overdraw or double credit,AT-022;NF-022,D-S10;D-S17,Proposed
+FR-023,P0,MVP,incidents;relief_requests;volunteer_profiles;assignments,Query-derived role/owner scoped dashboard;no global private totals or unnecessary summary table,AT-023,D-S03;D-S07,Proposed
+FR-024,P1,P1 restricted point and map,incidents;restricted_incident_locations,Default coarse data;optional separately restricted precise fields;private access audit,AT-024,D-005;D-007;D-S07,Proposed
+FR-025,P0,MVP,audit_events,Append-only runtime audit;actor/action/target/time/request ID;safe metadata;no cryptographic tamper claim,AT-025;NF-010,D-S12;D-S13,Proposed
+FR-026,P1,P1,evidence_files;incidents,Private metadata;MIME/signature/size checks outside transaction;orphan workflow;no external integration selected,AT-026,D-011,Proposed
+FR-027,P0,MVP,users;sessions;account_roles;memberships;membership_districts;audit_events,Suspension/grant revoke atomic with auth_version and sessions;global suspension actor authority remains unresolved,AT-027,D-S03;D-S05;C-09,Proposed pending global authority
+FR-028,P2,P2 derived query,incidents;relief_requests,Sanitized authorized export;no export/analytics entity required by current scope,AT-028,D-S07;D-S13,Proposed
+FR-029,P0,Existing connectivity,none,Existing SELECT-only readiness/liveness preserved;no domain/schema completeness claim,AT-029;DBR-001;DBR-005,D-S15,Existing behavior unchanged
+FR-030,P1,P1,privacy_requests;users;audit_events,Track authorized rights workflow;no automatic cascades or legally approved retention assumed,AT-030,D-010;D-S13,Proposed
+FR-031,P0,MVP,incidents;relief_requests;assignments;notifications;outbox_events;idempotency_records;audit_events,Commit-before-ack durability and restart reconciliation;persistent volume/recovery outside schema,AT-031;NF-005,D-S11;D-S17,Proposed
+FR-032,P0,MVP and operations,audit_events;outbox_events,Safe correlation IDs and bounded backlog/latency metrics;metrics/log infrastructure is outside schema,AT-032;NF-016,D-S12,Proposed
+FR-033,P0,MVP,users;organizations;districts;skills;units;incidents;relief_requests;assignments;notifications,Fictional deterministic entity fixtures;ephemeral credentials;no live dumps or automatic production seed,AT-033,D-001;D-S18,Proposed
+FR-034,P1,Frontend/API responsibility,none,No schema entity;clear state/reason codes and conflict DTOs support accessible journeys;UI testing deferred,AT-034,C-06,Outside database implementation
+FR-035,P0,MVP and UI,audit_events;memberships;membership_districts,Confirmed authorized high-impact command;server actor/reason/audit;UI confirmation not represented as DB permission,AT-035,D-S03;D-S12,Proposed
+NFR-001,P1,MVP and performance validation,incidents;relief_requests;assignments;notifications,Bounded indexed queries and short transactions;50-user latency benchmark remains unexecuted,NF-001;PERF-001,D-S09;D-S11,Proposed
+NFR-002,P1,MVP and live benchmark,outbox_events;notifications,Commit-first best-effort emit;bounded polling/retry;three-second target needs measurement,NF-002,D-S11,Proposed
+NFR-003,P1,Operations,none,Availability objective depends on deployment/monitoring;no schema guarantees demo uptime,NF-003,D-008,Outside database implementation
+NFR-004,P1,MVP,assignments;volunteer_profiles,Partial active-pair uniqueness plus capacity lock/count under real concurrency,NF-004;AT-016,D-S09;D-S15,Proposed
+NFR-005,P1,MVP and storage,incidents;relief_requests;assignments;notifications;audit_events;outbox_events,Atomic commit and persisted rows;restart evidence and durable storage still required,NF-005;AT-031,D-S11,Proposed
+NFR-006,P1,Security/release,none,Dependency/image scans and exception sign-off are outside entity design;no scan result claimed,NF-006,D-S04,Outside database implementation
+NFR-007,P1,MVP,users;sessions;memberships;membership_districts;organization_districts,Server authentication plus ownership/org/district/role on REST and socket;FKs reinforce links only,NF-007;SEC-001,D-S01;D-S02;D-S03,Proposed
+NFR-008,P1,MVP and transport,users;sessions,Approved password hashing and digest sessions;TLS configuration outside database schema,NF-008,D-S04;D-S05,Proposed
+NFR-009,P1,MVP and P1 restricted data,incidents;volunteer_profiles;restricted_incident_locations,Coarse default;no precise MVP collection;public allowlist and privacy review,NF-009;AT-013;AT-024,D-005;D-S07;D-S13,Proposed
+NFR-010,P1,MVP,audit_events,Sensitive mutations atomically record actor/action/target/time/request ID without secrets,NF-010;AT-025,D-S12,Proposed
+NFR-011,P1,Frontend,none,No schema entity;WCAG primary workflow review and keyboard testing remain frontend responsibilities,NF-011;AT-034,D-006,Outside database implementation
+NFR-012,P1,Frontend/browser,none,No schema entity;cross-browser critical journey smoke remains unexecuted,NF-012,D-006,Outside database implementation
+NFR-013,P1,Operations/recovery,none,Reviewed backups and isolated timed restore;schema compatibility plan supports but cannot prove RPO/RTO,NF-013;OPS-001,D-010;D-S13,Outside database implementation
+NFR-014,P1,Delivery,none,Immutable release and repeatable deployment outside schema;additive migration sequence documented only,NF-014;OPS-002,D-008;D-009,Outside database implementation
+NFR-015,P1,Design/verification,none,All canonical FR/NFR audited locally;domain acceptance cases PLANNED;no implementation/CI completion inferred,NF-015,D-S15,Proposed documentation coverage
+NFR-016,P1,MVP and operations,audit_events;outbox_events,Safe request correlation and worker backlog/error codes;collector/dashboard configuration deferred,NF-016;OPS-003,D-S12,Proposed
+NFR-017,P1,MVP,users;sessions;email_verification_tokens;idempotency_records,Secret/digest fields omitted from DTO/logs;no raw request body/private dataset in seed or evidence,NF-017;SEC-002,D-S04;D-S05,Proposed
+NFR-018,P1,API contract,relief_requests;notifications;assignments,Explicit Decimal/cursor/state/reason mapping and future approved OpenAPI synchronization;existing contract unchanged,NF-018,C-06;C-10;D-S16,Proposed
+NFR-019,P1,MVP,none,Normalized modular ownership and Prisma repositories;no direct frontend database access;no runtime change,NF-019,D-S15,Proposed
+NFR-020,P1,Reference/UI design,districts;skills;units,Stable nonlocalized codes;labels prepared for later translation;no locale table without requirement,NF-020,D-006,Proposed
+NFR-021,P1,Future scale,sessions;outbox_events;notification_streams,DB session state and queue leases support review of multiple workers;shared socket adapter still separate approval,NF-021,D-008;D-S05;D-S11,Proposed
+NFR-022,P1,MVP and P1 allocation,idempotency_records;assignments;allocations,Scoped body digest/result identity and atomic commit;retry after lost response has no double effect,NF-022;AT-016;AT-022,D-S17,Proposed
+NFR-023,P1,Operations/backup,none,Encrypted limited-access backups and isolated restore outside schema;no backup executed,NF-023;OPS-004,D-010;D-S13,Outside database implementation
+NFR-024,P1,Governance,audit_events;privacy_requests,Configurable reviewed retention/hold policy before pilot;append-only runtime is not eternal/legal immutability,NF-024,D-010;D-S12;D-S13,Proposed
+NFR-025,P1,MVP and abuse validation,incidents;relief_requests;assignments;notifications;outbox_events,Bounded payloads/pages/digests/worker retries/query time;upload/rate-limit controls still service work,NF-025;SEC-003,D-S11;D-S15,Proposed
