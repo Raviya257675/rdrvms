@@ -35,11 +35,30 @@ describe('DBR-004: NFR-019 database cleanup after HTTP drain', () => {
     expect(process.exitCode).toBe(1);
   });
 
-  it('records unsuccessful cleanup without exposing the exception', async () => {
-    const run = fixture(vi.fn(async () => { throw new Error('synthetic cleanup detail'); }));
+  it.each([
+    ['rejected promise', () => Promise.reject(new Error('synthetic cleanup detail'))],
+    ['synchronous throw', () => { throw new Error('synthetic cleanup detail'); }],
+    ['delayed rejection', () => new Promise<void>((_resolve, reject) => {
+      setTimeout(() => reject(new Error('synthetic cleanup detail')), 500);
+    })],
+  ] as const)('retains the original deadline after %s without exposing the exception', async (_kind, close) => {
+    const logs = (['error', 'warn', 'info', 'log'] as const).map(method =>
+      vi.spyOn(console, method).mockImplementation(() => {}));
+    const run = fixture(vi.fn(close));
     run.stop(); run.drained();
-    await vi.advanceTimersByTimeAsync(1000);
+    await vi.advanceTimersByTimeAsync(999);
+    expect(run.close).toHaveBeenCalledTimes(1);
     expect(process.exitCode).toBe(1);
     expect(run.forceExit).not.toHaveBeenCalled();
+    expect(vi.getTimerCount()).toBe(1);
+    await vi.advanceTimersByTimeAsync(1);
+    expect(run.forceExit).toHaveBeenCalledTimes(1);
+    expect(process.exitCode).toBe(1);
+    expect(vi.getTimerCount()).toBe(0);
+    run.stop();
+    await vi.advanceTimersByTimeAsync(1000);
+    expect(run.close).toHaveBeenCalledTimes(1);
+    expect(run.forceExit).toHaveBeenCalledTimes(1);
+    for (const log of logs) expect(log).not.toHaveBeenCalled();
   });
 });
