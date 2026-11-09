@@ -302,3 +302,7 @@ Separate schema installation from bootstrap and from endpoint enabling. Proposed
 | Other domain decisions | No new closures | D-S06–10/D-S14/D-S16/D-S17 remain pending for their own slices; no extra domain tables/DTOs included |
 
 General PR #5 approval does not fill these gates. A planned stage grouping is not an accepted feature or a migration authorization. Final verdict for 03A.3: **NEEDS APPROVAL**; database implementation stays **BLOCKED**. Exact original links/reviewer requirements and evidence assessment are in [approval-record.md](approval-record.md) and [approval-verification.md](approval-verification.md).
+
+## 03A.4 implementation authorization handoff
+
+[identity-implementation-handoff.md](identity-implementation-handoff.md) now collects the current approval inventory (none verified), exact Stage 1 schema-only candidate, preserved 3/4/5 dependency order, 16 FK confirmation, remaining design constraints, native SQL/permission/fixture/RED/GREEN/catalog/recovery requirements and separate design/repository/SQL/endpoint authorization gates. All scalar/key/FK/check/index inventory above remains PROPOSED and unchanged; no generic review accepts it. Latest PR #6 evidence is assessed in approval-verification.md. Current verdict: NEEDS ADDITIONAL APPROVAL; no schema, migration or SQL execution authorized.

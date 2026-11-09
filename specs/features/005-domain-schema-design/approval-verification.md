@@ -55,3 +55,36 @@ Executed `gh pr list --repo Raviya257675/rdrvms --head feature/domain-schema-des
 No decision-specific evidence links were supplied to follow. The discovered PR/its review are assessed above; this is not a claim that no approval exists anywhere outside the inspected sources. Required reviewer-role mapping, accepted option/parameter scope and source-amendment authorization remain missing. To unblock: provide actual required-role sign-offs identifying each decision, option/deviations, scope, date and durable evidence; then reverify before applying authoritative corrections. No unsolicited external contact is authorized.
 
 The detailed [three-stage proposal](identity-migration-stages.md) proceeds as documentation only. All stage fields, native objects, authority boundaries, fixtures and endpoint gates remain PROPOSED. [Evidence](evidence.md) records current quality checks; passing documentation checks cannot approve policy or migrations.
+
+## 03A.4 latest identity-architecture review verification
+
+Current verdict: **NEEDS ADDITIONAL APPROVAL**. Current branch `docs/identity-architecture-signoff`; clean starting HEAD `73dc6a203ed2ba78f975dec57beb71c0c6f2ef2f`. Earlier sections describe the prior branch/PR #5 check, not current approval evidence. This prompt permits evidence verification and a documentation handoff; it does not supply the missing design sign-offs or SQL permission.
+
+Read-only branch-specific lookup found [PR #6](https://github.com/Raviya257675/rdrvms/pull/6), title “docs(db): record identity architecture approval blockers”, state MERGED, aggregate reviewDecision APPROVED, head `73dc6a203ed2ba78f975dec57beb71c0c6f2ef2f`, matching this branch/HEAD. Its body is an unfilled PR template with placeholder requirement/spec/test fields. Conversation comments and paginated inline review comments both returned empty lists.
+
+Evidence **R6** is [review 5829731967](https://github.com/Raviya257675/rdrvms/pull/6#pullrequestreview-5829731967): actual GitHub login `tharushikadilrukshi111-hash`, account type `User`, association `COLLABORATOR`, review state APPROVED, submitted `2026-11-09T17:15:46Z`, reviewed commit `73dc6a203ed2ba78f975dec57beb71c0c6f2ef2f`. Its complete text is “Thats okay.”. No project role is established by the metadata. It contains no D-S selection/parameter/deviation/supervisor/security/constitutional/source-amendment authorization. Merge actor Raviya257675 and timestamp `2026-11-09T17:16:17Z` are merge metadata, not approval of individual decisions. The generic R6 review of documentation recording blockers does not resolve those blockers.
+
+Every row below reports actual observation rather than assigning a signature. **Review date is the generic R6 submission date, not a decision approval date.** Accepted option is “none verified” for each. Required reviewer roles remain those in approval-record.md; the observed collaborator is not assumed to hold them. Evidence scope for every row is generic PR documentation review only.
+
+| Decision / authority gate | Actual observed reviewer | Actual project role | Accepted option | Observed review date (UTC) | Evidence | Verified scope / outcome |
+|---|---|---|---|---|---|---|
+| D-S01 | tharushikadilrukshi111-hash | NOT VERIFIED | None verified | 2026-11-09T17:15:46Z | R6 | Generic PR review only; decision sign-off PENDING |
+| D-S02 | tharushikadilrukshi111-hash | NOT VERIFIED | None verified | 2026-11-09T17:15:46Z | R6 | Generic PR review only; decision sign-off PENDING |
+| D-S03 | tharushikadilrukshi111-hash | NOT VERIFIED | None verified | 2026-11-09T17:15:46Z | R6 | Generic PR review only; decision sign-off PENDING |
+| D-S04 | tharushikadilrukshi111-hash | NOT VERIFIED | None verified | 2026-11-09T17:15:46Z | R6 | Generic PR review only; decision sign-off PENDING |
+| D-S05 | tharushikadilrukshi111-hash | NOT VERIFIED | None verified | 2026-11-09T17:15:46Z | R6 | Generic PR review only; decision sign-off PENDING |
+| D-S11 | tharushikadilrukshi111-hash | NOT VERIFIED | None verified | 2026-11-09T17:15:46Z | R6 | Generic PR review only; decision sign-off PENDING |
+| D-S12 | tharushikadilrukshi111-hash | NOT VERIFIED | None verified | 2026-11-09T17:15:46Z | R6 | Generic PR review only; decision sign-off PENDING |
+| D-S13 | tharushikadilrukshi111-hash | NOT VERIFIED | None verified | 2026-11-09T17:15:46Z | R6 | Generic PR review only; decision sign-off PENDING |
+| D-S15 | tharushikadilrukshi111-hash | NOT VERIFIED | None verified | 2026-11-09T17:15:46Z | R6 | Generic PR review only; decision sign-off PENDING |
+| D-S18 | tharushikadilrukshi111-hash | NOT VERIFIED | None verified | 2026-11-09T17:15:46Z | R6 | Generic PR review only; decision sign-off PENDING |
+| C-11 | tharushikadilrukshi111-hash | NOT VERIFIED | None verified | 2026-11-09T17:15:46Z | R6 | Generic PR review only; decision sign-off PENDING |
+| FR-027 | tharushikadilrukshi111-hash | NOT VERIFIED | None verified | 2026-11-09T17:15:46Z | R6 | Generic PR review only; decision sign-off PENDING |
+
+The preferred options and exact prospective scope for the ten D-S rows remain in approval-record.md, unchanged. C-11 specifically needs authorized AGENTS/constitutional wording with supervisor/constitutional and independent security approval; FR-027 requires the D-S03/D-S05/D-S18 actor/target/capability/revocation/issuance/recovery boundary. No such accepted wording/scope is present in R6 or the local records. Other D-S rows and D-001–D-012 remain unapproved/open; no option, attribute, relation, constraint or security value is promoted from proposed to accepted.
+
+**Authorized design corrections applied: none.** AGENTS.md, constitution, canonical SRS/RBAC/architecture/ADR/security/OpenAPI/traceability/test sources remain unchanged, including C-01 and all C-11/FR-027 conflicts. Existing amendment proposals remain available in source-amendments.md. No recorded amendment authority can be inferred from either PR merge, generic review or this request.
+
+Commands: read-only `gh pr list` for current branch; `gh pr view 6` with body/head/review/comment fields; paginated GET `repos/Raviya257675/rdrvms/pulls/6/reviews` and GET `repos/Raviya257675/rdrvms/pulls/6/comments`. Initial PR-list request was not executed because automatic permission review timed out; its one permitted retry exited 0. View/review/inline reads exited 0 (the API reads yielded sessions then completed). No GitHub write, review request or external contact. Local approval table has no decision evidence links; this discovered review is assessed directly. These results do not claim there are no approvals anywhere outside the inspected evidence.
+
+The [implementation handoff](identity-implementation-handoff.md) distinguishes the proposed first schema unit, all 12 model dependencies and three separate gates: design approval, repository implementation authorization, SQL execution authorization. All gates remain incomplete; no executable schema/migration/database/runtime changes are made.

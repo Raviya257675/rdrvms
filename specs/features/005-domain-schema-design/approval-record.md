@@ -38,3 +38,7 @@ Current implementation/migration authorization for **every row: NOT AUTHORIZED**
 ## 03A.3 verified evidence disposition
 
 [Approval verification](approval-verification.md) records the exact PR #5/review URL, GitHub account, submitted timestamp, reviewed commit and generic “Good” review. Its APPROVED state does not identify accepted D-S options or required supervisor/security roles. No accepted decision or authoritative amendment was verified; all 18 verification outcomes remain PENDING and this table's candidate statuses/name/date/evidence/authorization fields are preserved. The general review is not silently promoted into any approval field.
+
+## 03A.4 current evidence disposition
+
+[Latest review verification](approval-verification.md#03a4-latest-identity-architecture-review-verification) records PR #6's actual reviewer/date/commit and generic “Thats okay.” text on docs/identity-architecture-signoff. No required project role, decision option/parameter scope, constitutional amendment or SQL authorization is verified. D-S01/02/03/04/05/11/12/13/15/18 plus C-11/FR-027 stay PENDING for sign-off; the complete 18-row candidate record and blank approval fields are preserved. No general review date/account is copied into decision signature fields. Current verdict: NEEDS ADDITIONAL APPROVAL.
