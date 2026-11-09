@@ -27,7 +27,7 @@ FR-025,Functional,P0,AT-025,,US-005,,,Planned
 FR-026,Functional,P1,AT-026,,US-016,,,Planned
 FR-027,Functional,P0,AT-027,specs/features/001-auth/spec.md,US-017,,,Planned
 FR-028,Functional,P2,AT-028,,US-020,,,Planned
-FR-029,Functional,P0,AT-029,specs/features/000-backend-foundation/spec.md,US-012,apps/api/src/app.ts,,In progress
+FR-029,Functional,P0,AT-029,specs/features/004-database-readiness/spec.md,US-012,apps/api/src/app.ts,,Implemented
 FR-030,Functional,P1,AT-030,,US-017,,,Planned
 FR-031,Functional,P0,AT-031,,US-019,,,Planned
 FR-032,Functional,P0,AT-032,specs/features/000-backend-foundation/spec.md,US-012,apps/api/src/app.ts,,In progress
@@ -50,12 +50,12 @@ NFR-013,Nonfunctional,P1,NF-013,,,,,Planned
 NFR-014,Nonfunctional,P1,NF-014,,,,,Planned
 NFR-015,Nonfunctional,P1,NF-015,,,,,Planned
 NFR-016,Nonfunctional,P1,NF-016,,,,,Planned
-NFR-017,Nonfunctional,P1,NF-017,specs/features/000-backend-foundation/spec.md,,apps/api/src/app.ts,,In progress
-NFR-018,Nonfunctional,P1,NF-018,specs/features/000-backend-foundation/spec.md,,apps/api/src/app.ts,,In progress
-NFR-019,Nonfunctional,P1,NF-019,specs/features/000-backend-foundation/spec.md,,apps/api/src/app.ts,,In progress
+NFR-017,Nonfunctional,P1,NF-017,specs/features/004-database-readiness/spec.md,,apps/api/src/database-config.ts,,In progress
+NFR-018,Nonfunctional,P1,NF-018,specs/features/004-database-readiness/spec.md,,docs/api/openapi.json,,In progress
+NFR-019,Nonfunctional,P1,NF-019,specs/features/004-database-readiness/spec.md,,apps/api/src/database.ts,,In progress
 NFR-020,Nonfunctional,P1,NF-020,,,,,Planned
 NFR-021,Nonfunctional,P1,NF-021,,,,,Planned
 NFR-022,Nonfunctional,P1,NF-022,,,,,Planned
 NFR-023,Nonfunctional,P1,NF-023,,,,,Planned
 NFR-024,Nonfunctional,P1,NF-024,,,,,Planned
-NFR-025,Nonfunctional,P1,NF-025,specs/features/000-backend-foundation/spec.md,,apps/api/src/app.ts,,In progress
+NFR-025,Nonfunctional,P1,NF-025,specs/features/004-database-readiness/spec.md,,apps/api/src/health.ts,,In progress
