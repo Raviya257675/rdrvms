@@ -33,10 +33,10 @@ describe('FND-001/002: FR-029/032, AT-029/032 foundation HTTP', () => {
     expect(response.text).not.toContain('fictional-private-input');
   });
 
-  it('does not present an unimplemented readiness check as healthy', async () => {
+  it('fails closed when no database readiness dependency is supplied', async () => {
     const response = await request(createApp()).get('/health/ready');
-    expect(response.status).toBe(404);
-    expect(response.body.error.code).toBe('NOT_FOUND');
+    expect(response.status).toBe(503);
+    expect(response.body.error.code).toBe('NOT_READY');
   });
 
   it('generates separate server request IDs instead of trusting client input', async () => {

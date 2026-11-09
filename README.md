@@ -1,6 +1,6 @@
 # Real-Time Disaster Relief & Volunteer Management System (RDRVMS)
 
-> **Status: MINIMAL BACKEND FOUNDATION IMPLEMENTED — FRONTEND AND DOMAIN APPLICATION NOT IMPLEMENTED.**
+> **Status: BACKEND FOUNDATION AND DATABASE CONNECTIVITY IMPLEMENTED — FRONTEND AND DOMAIN APPLICATION NOT IMPLEMENTED.**
 > Academic simulation; not an official disaster-alert system, emergency dispatch service or live operations platform.
 
 ## Stack (proposed baseline)
@@ -21,19 +21,21 @@
 
 ## Backend foundation
 
-Only `GET /health/live`, safe JSON errors, nonsecret configuration and bounded HTTP shutdown are implemented. See [API commands and scope](apps/api/README.md) and [foundation evidence](specs/features/000-backend-foundation/evidence.md).
+`GET /health/live`, database-backed `GET /health/ready`, safe JSON errors, private runtime configuration and bounded HTTP/database shutdown are implemented. No domain tables or migrations exist. See [API commands and scope](apps/api/README.md), [database slice](specs/features/004-database-readiness/spec.md) and [historical foundation evidence](specs/features/000-backend-foundation/evidence.md).
 
 From the repository root, with Node.js 24:
 
 ```bash
 npm --prefix apps/api ci
 npm --prefix apps/api test
+npm --prefix apps/api run test:integration
+npm --prefix apps/api run prisma:validate
 npm --prefix apps/api run typecheck
 npm --prefix apps/api run build
 npm --prefix apps/api run dev
 ```
 
-The API defaults to `127.0.0.1:3000`; it does not load `.env` or connect to PostgreSQL. Database readiness, authentication, permissions and all disaster-management behavior remain unimplemented and require their own approvals.
+The API defaults to `127.0.0.1:3000` and lazily connects to PostgreSQL. Entry points load the existing ignored root environment file without logging values; unit tests remain independent. Use existing DATABASE_URL or Compose POSTGRES_USER/PASSWORD/DB variables; do not duplicate/commit credentials. Authentication, permissions and all disaster-management behavior remain unimplemented and require separate approvals.
 
 ## Documentation checks
 ```bash
@@ -47,7 +49,7 @@ python3 -m unittest discover -s scripts -p 'test_*.py'
 Write `spec.md` → `plan.md` → `tasks.md` → failing tests → implementation → passing tests → review/merge. Keep IDs `FR-xxx`, `AT-xxx`, relevant ADRs and API contracts synchronized.
 
 ## What's intentionally missing
-No frontend application, domain APIs, database schema/migrations, Dockerfiles or application deployment exist. The backend package has local tests and build/start commands; application CI remains unconfigured. Example application CI workflows and root TypeScript test templates are **not active**. Automated docs validation is active.
+No frontend application, domain APIs, domain models/migrations, Dockerfiles or application deployment exist. Prisma has a connectivity-only schema with no models. The backend package has local tests and build/start commands; application CI remains unconfigured. Example application CI workflows and root TypeScript test templates are **not active**. Automated docs validation is active.
 
 ## Source of truth
 Approved Word SRS = human requirements baseline. Committed feature Markdown/OpenAPI/traceability = agent-readable working contract. Conflicts become explicit change requests; no automatic silent overrides.

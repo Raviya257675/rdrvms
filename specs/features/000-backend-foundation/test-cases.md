@@ -2,6 +2,8 @@
 
 These are foundation-specific subdivisions; existing broad acceptance tests remain incomplete.
 
+Historical Prompt 01 baseline: the absence-of-readiness assertion is superseded by feature 004, which now requires fail-closed 503 when no database probe is supplied. Other foundation assertions remain. See `../004-database-readiness/` for current AT-029 coverage and runtime environment/cleanup changes.
+
 | ID | Trace | Expected behavior | Implementation |
 |---|---|---|---|
 | FND-001 | FR-029 / AT-029, NFR-018 | Safe liveness response matches its OpenAPI schema; readiness remains absent | apps/api/tests/app.test.ts |

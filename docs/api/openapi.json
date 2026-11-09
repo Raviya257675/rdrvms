@@ -3,12 +3,12 @@
   "info": {
     "title": "RDRVMS draft REST API",
     "version": "0.1.0",
-    "description": "Minimal backend foundation implements GET /health/live only. All other endpoints remain proposed and require review before implementation; private fields intentionally omitted."
+    "description": "Backend connectivity implements GET /health/live and GET /health/ready. All other endpoints remain proposed and require review before implementation; private fields intentionally omitted."
   },
   "servers": [
     {
       "url": "http://localhost:3000",
-      "description": "Local foundation API; only GET /health/live is implemented"
+      "description": "Local API with process liveness and PostgreSQL readiness"
     }
   ],
   "paths": {
@@ -950,18 +950,39 @@
         "tags": [
           "FR-029"
         ],
-        "summary": "FR-029: Ops. Draft contract; refine response schema before coding.",
+        "summary": "FR-029: Public bounded PostgreSQL connectivity check; no schema/domain readiness claim.",
         "operationId": "get_health_ready",
         "responses": {
           "200": {
-            "description": "Successful request"
+            "description": "A read-only database connectivity query succeeded.",
+            "headers": {
+              "Cache-Control": { "schema": { "type": "string", "const": "no-store" } },
+              "X-Request-Id": { "schema": { "type": "string", "format": "uuid" } }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["status"],
+                  "additionalProperties": false,
+                  "properties": { "status": { "type": "string", "const": "ready" } }
+                }
+              }
+            }
           },
           "503": {
-            "description": "Dependency not ready"
+            "description": "Database unavailable, timed out or shutting down. Error code NOT_READY; no connection/error details.",
+            "headers": {
+              "Cache-Control": { "schema": { "type": "string", "const": "no-store" } },
+              "X-Request-Id": { "schema": { "type": "string", "format": "uuid" } }
+            },
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Error" } }
+            }
           }
         },
         "x-requirement-id": "FR-029",
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "security": []
       }
     },

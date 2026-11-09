@@ -10,6 +10,7 @@
     "exactOptionalPropertyTypes": true,
     "noEmitOnError": true,
     "verbatimModuleSyntax": true,
+    "rewriteRelativeImportExtensions": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "types": ["node"]
