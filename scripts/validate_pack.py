@@ -60,7 +60,7 @@ def run():
         for issue in errors: print('FAIL:',issue)
         return 1
     print('PASS: documentation manifest, requirement/test references and draft OpenAPI JSON validated.')
-    print('NOTE: no web application or executable application tests are implemented.')
+    print('NOTE: documentation checks do not build or execute application tests.')
     return 0
 
 if __name__=='__main__':

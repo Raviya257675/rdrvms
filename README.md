@@ -1,6 +1,6 @@
 # Real-Time Disaster Relief & Volunteer Management System (RDRVMS)
 
-> **Status: DOCUMENTATION & SPECIFICATION STARTER — NO WEB APPLICATION IMPLEMENTED.**
+> **Status: MINIMAL BACKEND FOUNDATION IMPLEMENTED — FRONTEND AND DOMAIN APPLICATION NOT IMPLEMENTED.**
 > Academic simulation; not an official disaster-alert system, emergency dispatch service or live operations platform.
 
 ## Stack (proposed baseline)
@@ -19,7 +19,23 @@
 7. `specs/templates/`, ADR/change-request templates, release record and incident report templates for later phases.
 6. `docs/devops/ci-cd.md`, `docs/runbooks/`, release templates.
 
-## Current executable checks (documentation only)
+## Backend foundation
+
+Only `GET /health/live`, safe JSON errors, nonsecret configuration and bounded HTTP shutdown are implemented. See [API commands and scope](apps/api/README.md) and [foundation evidence](specs/features/000-backend-foundation/evidence.md).
+
+From the repository root, with Node.js 24:
+
+```bash
+npm --prefix apps/api ci
+npm --prefix apps/api test
+npm --prefix apps/api run typecheck
+npm --prefix apps/api run build
+npm --prefix apps/api run dev
+```
+
+The API defaults to `127.0.0.1:3000`; it does not load `.env` or connect to PostgreSQL. Database readiness, authentication, permissions and all disaster-management behavior remain unimplemented and require their own approvals.
+
+## Documentation checks
 ```bash
 python3 scripts/validate_pack.py
 python3 -m unittest discover -s scripts -p 'test_*.py'
@@ -31,7 +47,7 @@ python3 -m unittest discover -s scripts -p 'test_*.py'
 Write `spec.md` → `plan.md` → `tasks.md` → failing tests → implementation → passing tests → review/merge. Keep IDs `FR-xxx`, `AT-xxx`, relevant ADRs and API contracts synchronized.
 
 ## What's intentionally missing
-No production application code, package.json, migrations, Dockerfiles, deployment secrets or executing application tests. Do not claim the app can be started until these exist. Example application CI workflows and TypeScript test templates are **not active**. Automated docs validation is active.
+No frontend application, domain APIs, database schema/migrations, Dockerfiles or application deployment exist. The backend package has local tests and build/start commands; application CI remains unconfigured. Example application CI workflows and root TypeScript test templates are **not active**. Automated docs validation is active.
 
 ## Source of truth
 Approved Word SRS = human requirements baseline. Committed feature Markdown/OpenAPI/traceability = agent-readable working contract. Conflicts become explicit change requests; no automatic silent overrides.
