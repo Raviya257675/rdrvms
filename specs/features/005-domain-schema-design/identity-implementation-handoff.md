@@ -10,6 +10,8 @@ Requirements: FR-001/002/004/025/027/033/035, scope-data support for FR-006, NFR
 
 The full field/native type/nullability/default/key/FK/check/index inventory is in [identity-migration-stages.md](identity-migration-stages.md), “Complete model scalar inventory”, “Primary keys, uniqueness and exact FK/relation inventory”, “Native CHECK inventory” and “Index inventory”. It is not silently accepted by this handoff.
 
+03B.0 refines only the proposed first-unit text/collation/lifecycle details in [stage1-technical-corrections.md](stage1-technical-corrections.md). It replaces earlier generic nonblank/code-format shorthand with seven exact CHECK candidates and proposed C collation on both code columns; 18 scalar fields and PK/UQ/FK/index topology stay unchanged. The district-first reference lock protocol, explicit runtime/owner/bootstrap/maintenance matrix, immutable identifiers and S1-01–S1-16 tests are also unaccepted candidates. This is documentation work, not acceptance of DEV-STAGE1, gate completion or a change to the blocked implementation verdict.
+
 | Stage | Exact Prisma candidate → SQL table / catalogue ID | Verified approved fields/constraints | Principal requirement justification |
 |---|---|---|---|
 | 1 | District → districts / E01 | NONE | NFR-007 district scope; FR-005/007/010/014 downstream geography |

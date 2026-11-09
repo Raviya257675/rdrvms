@@ -1,10 +1,67 @@
 # Human approval record — all 18 decisions
 
-Status: **PENDING — no complete sign-off evidence supplied**. The backend/product owner selected the recommended flexible scoped architecture as the preferred direction through Master Prompt 03A.2, received 2026-11-09. This is recorded direction/authorization to prepare design documents only. No decision-specific reviewer name, approval date, signature or evidence URL was supplied; all such fields below are intentionally blank. A general GitHub review was discovered during 03A.3 and is assessed separately in approval-verification.md; it does not satisfy these sign-offs. The received date is not an approval date.
+**Overall status: PENDING — required sign-off evidence has not been supplied.**
 
-D-001–D-012 in docs/decisions/open-questions.md remain OPEN. Related/dependency links below do not claim that the original register already decided password parameters, global authority, capacity or serialization. No new original D-ID is fabricated. PROPOSED denotes a recommended reconciliation; PENDING denotes an unresolved/dependent selection. Neither means approved.
+The backend/product owner selected the flexible scoped architecture as a **preferred design direction** on 2026-11-09. This was permission to prepare a proposal, **not** acceptance of the 18 decisions, a delegation of supervisor authority, implementation permission, or database-execution authorization.
 
-The scope column defines exactly what a future design signature would cover. Deviations or unresolved values must be recorded explicitly; a partial signature cannot approve unspecified values. A later accepted row still does not authorize implementation or migration, which require separate recorded instructions and reviewed per-slice evidence.
+The original D-001–D-012 decisions in `docs/decisions/open-questions.md` remain OPEN unless individually resolved by authorized review. The existing approval-verification evidence for PRs #5, #6 and #7 contains generic review comments, not decision-specific sign-offs.
+
+## Stage 1 — proposed independent backend development delegation
+
+**GitHub review venue:** [Issue #8](https://github.com/Raviya257675/rdrvms/issues/8)
+
+**Proposed scope only:** `feature/database-geography-stage1`, feature `005-domain-schema-design` and these three entities:
+
+- E01 — `districts`
+- E04 — `organizations`
+- E05 — `organization_districts`
+
+**Proposed permission:** After authorization is established and the exact Stage 1 design is accepted, the backend owner may write Prisma models and tests and generate migration SQL **offline**, within the reviewed synthetic-data, feature-branch scope. Repeated team-member signatures may be replaced for this delegated local-development scope **only if the authorized governance amendment explicitly permits that change**.
+
+**Not included:** SQL execution, changes to shared/production databases, production deployment, protected-branch merge bypass, changes to security/privacy controls, or independent security review claims.
+
+| Required authority | Actual reviewer | Role verification | Decision | Date | Evidence URL | Conditions |
+|---|---|---|---|---|---|---|
+| Authorized product/team scope authority | PENDING | PENDING | PENDING | — | — | — |
+| Module-supervisor scope authority | PENDING | PENDING | PENDING | — | — | — |
+
+**Decision evidence requirements:** Each authority must provide their own explicit decision (`APPROVED`, `REQUEST CHANGES`, or `REJECTED`), verified role, delegated scope, conditions, the reviewed document/commit, and whether the development-only governance amendment is accepted. A request from the backend owner or an ambiguous collaborator comment is **not** a grant of authority. Where team and supervisor approval are both required, both must be evidenced.
+
+**Current delegation status: NOT GRANTED / UNVERIFIED.** Do not change this status merely because Issue #8 is open or a reviewer has said “Confirm that.”
+
+## Stage 1 — backend-owner acceptance (only after delegation)
+
+| Field | Value |
+|---|---|
+| Backend-owner identity | PENDING — enter the real name/account when signing |
+| Recorded delegated authority | PENDING — link both required authorization comments |
+| Reviewed schema revision | PENDING — enter the exact Git commit hash |
+| Scope | E01 `districts`; E04 `organizations`; E05 `organization_districts` |
+| Decisions | Stage 1 portions of D-S02 and D-S15 only |
+| Reviewed fields, defaults, keys, constraints, indexes, referential actions | PENDING — verify against `entity-catalogue.md`, `identity-migration-stages.md`, `constraints-and-indexes.md` and the unaccepted 03B.0 `stage1-technical-corrections.md` |
+| Decision | PENDING — `APPROVE`, `REQUEST CHANGES`, or `DEFER` after actual review |
+| Decision date | PENDING |
+| Evidence link | PENDING — link to the backend owner's own signed GitHub comment |
+| Independent security review | NOT PERFORMED |
+| Implementation authorization | NOT AUTHORIZED until delegation, design acceptance and applicable governance checks are complete |
+| SQL/migration execution authorization | NOT AUTHORIZED — a separate exact-target, exact-SQL approval is required |
+
+An actual backend-owner decision must reference the **specific reviewed commit and schema details**, not merely the three entity names. It must not claim acceptance of C-11, FR-027, session controls or any other excluded decision.
+
+## Stage 1 — implementation and migration gates
+
+| Gate | Current status | Evidence needed |
+|---|---|---|
+| Authorized product/team and module-supervisor delegation | PENDING | Explicit role-verified decisions with scope and conditions |
+| Development-only governance amendment | PENDING | Approval by the relevant authority and adopted source change, if required |
+| Backend-owner acceptance of exact Stage 1 schema | PENDING | Reviewed revision, D-S02/D-S15 subset, fields/FKs/checks/indexes and own sign-off |
+| Local Prisma implementation and offline SQL generation | NOT AUTHORIZED | Valid delegation, recorded schema acceptance and compliance with active policy |
+| Migration SQL execution | NOT AUTHORIZED | Separate reviewed SQL, verified disposable target, migration/recovery plan and explicit execution approval |
+| Protected `main` merge or release | NOT AUTHORIZED BY THIS RECORD | Applicable GitHub reviews, CI, and release gates |
+
+## Decision sign-off record
+
+A signature covers only the accepted option, exact scope and values recorded in that row; it does not silently approve dependencies. **PROPOSED** and **PENDING** are not approvals. All evidence/name/date fields remain intentionally blank below.
 
 | Decision | Original linked IDs / relationship | Preferred option | Deviations / exclusions / open values | Exact design approval scope | Required reviewer roles | Reviewer name(s) | Approval date | Evidence link | Approval status | Implementation authorization | Migration authorization |
 |---|---|---|---|---|---|---|---|---|---|---|---|
@@ -29,16 +86,24 @@ The scope column defines exactly what a future design signature would cover. Dev
 
 ## Evidence rules and approval boundaries
 
-Each required reviewer must supply their own name, date, exact accepted option/parameter set, deviations and durable review link. Independent security review must be distinguishable from author/backend selection. Supervisor approval is required for C-11 constitutional interpretation and global FR-027 authority; source amendments require recorded authorization separately. No assumed approval by elapsed time, lack of objection, passing docs tests or preferred-option selection.
+Each required reviewer must provide their own name, date, exact accepted option and parameter set, deviations, and durable review link. Independent security review must be distinct from the backend owner's design preference. Supervisor approval is required for the C-11 constitutional interpretation and the proposed global FR-027 authority; amendments to authoritative sources require separately recorded authorization.
 
-For D-S04/D-S05 approve every value in security-parameters.md or list explicit remaining blockers. Verification lifetime/delivery/rate limits, library/dependency consent, CSRF storage/reissue and development cookie conditions cannot be filled by implication. For D-S13 signing the synthetic-data boundary leaves numeric retention OPEN. D-S06–D-S11/D-S14/D-S16/D-S17 remain pending unless reviewed individually.
+For D-S04/D-S05, either approve **all** relevant parameters in `security-parameters.md` or list precisely which remain unapproved. Verification lifetimes, delivery, rate limits, library choice, CSRF handling and development cookie behavior cannot be inferred.
 
-Current implementation/migration authorization for **every row: NOT AUTHORIZED**. Constitutional ratification, source synchronization, SQL review, disposable target approval, failing behavioral tests and a separate implementation request remain prerequisites. No complete-design acceptance is recorded.
+Signing D-S13's synthetic-only boundary would not settle numeric retention periods. The unrelated D-S06–D-S11/D-S14/D-S16/D-S17 decisions remain pending unless reviewed in their own scope.
 
-## 03A.3 verified evidence disposition
+**Every row above currently states `NOT AUTHORIZED` for implementation and migration.** Constitutional or source amendments, reviewed feature-slice instructions, SQL review, disposable target identification, negative test evidence and independent SQL-execution authorization remain applicable as stated in the governing documents.
 
-[Approval verification](approval-verification.md) records the exact PR #5/review URL, GitHub account, submitted timestamp, reviewed commit and generic “Good” review. Its APPROVED state does not identify accepted D-S options or required supervisor/security roles. No accepted decision or authoritative amendment was verified; all 18 verification outcomes remain PENDING and this table's candidate statuses/name/date/evidence/authorization fields are preserved. The general review is not silently promoted into any approval field.
+## Previously checked general GitHub reviews
 
-## 03A.4 current evidence disposition
+- **03A.3:** The generic “Good” approval on PR #5 did not identify decisions or the necessary reviewer roles. See [approval-verification.md](approval-verification.md).
+- **03A.4:** The generic “Thats okay” approval on PR #6 did not identify the required decision scope or security/supervisor authority. See [approval-verification.md](approval-verification.md#03a4-latest-identity-architecture-review-verification).
+- **Stage 1 delegation:** The request and collaborator response in [Issue #8](https://github.com/Raviya257675/rdrvms/issues/8) have not established the required product/team and supervisor delegation; do not treat them as approvals unless the relevant authorized reviewers provide explicit decisions.
 
-[Latest review verification](approval-verification.md#03a4-latest-identity-architecture-review-verification) records PR #6's actual reviewer/date/commit and generic “Thats okay.” text on docs/identity-architecture-signoff. No required project role, decision option/parameter scope, constitutional amendment or SQL authorization is verified. D-S01/02/03/04/05/11/12/13/15/18 plus C-11/FR-027 stay PENDING for sign-off; the complete 18-row candidate record and blank approval fields are preserved. No general review date/account is copied into decision signature fields. Current verdict: NEEDS ADDITIONAL APPROVAL.
+**Current verdict: BLOCKED for local Stage 1 implementation under the existing documented governance; SQL execution is separately unauthorized.** This file is a prepared approval record, not a grant of permission.
+
+## 03B.0 technical corrections — no approval granted
+
+[stage1-technical-corrections.md](stage1-technical-corrections.md) prepares responses to the six technical findings for E01/E04/E05 only. Exact whitespace/name handling, strict ASCII code format/C collation and vocabulary, identifier stability, reactivation consequences, district locking and effective reference-role privileges are PENDING human design/security acceptance. S1-01–S1-16 in [test-cases.md](test-cases.md) are PLANNED / NOT EXECUTED. Documentation checks cannot satisfy database or human-review gates.
+
+The 03B.0 instruction authorizes draft-document corrections only; it supplies no delegation, exact design acceptance, reviewer identity/signature or implementation/SQL permission. All 18 D-S decision rows and evidence fields above remain unchanged. D-S02/D-S15 are not APPROVED; the proposed DEV-STAGE1 amendment is not adopted. Delegation remains NOT GRANTED / UNVERIFIED, implementation BLOCKED / NOT AUTHORIZED, SQL execution NOT AUTHORIZED and independent human security sign-off absent. Technical documentation may become READY FOR HUMAN DESIGN REVIEW without changing any of these states.

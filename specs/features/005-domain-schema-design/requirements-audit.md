@@ -2,6 +2,12 @@
 
 Status: PROPOSED. Reconciled under Master Prompt 03A.2 from clean branch `feature/domain-schema-design`, HEAD `7498ced7d5e3db1baf6a9be7e8f946083acf2e6e`. Historical local baseline: `8cc60e99d473bb2d15c534481077a60e293f5bec`, branch `feature/domain-schema-design`, initially clean. This document records evidence and questions; it does not amend source authority.
 
+## 03B.0 current Stage 1 correction scope
+
+Prepared on `feature/database-geography-stage1` at HEAD `c9969c3d048446961445f1ef781e57bff487a4b6`, with pre-existing local approval-record and development-proposal changes preserved. Authorization covers proposed design documentation only for E01/E04/E05. [stage1-technical-corrections.md](stage1-technical-corrections.md) and S1-01–S1-16 in [test-cases.md](test-cases.md) fill whitespace/code, concurrency, privilege, identifier and negative-test gaps; all new product/security policy choices remain PENDING. No requirements/governance/auth/RBAC source is amended.
+
+FR-004/AT-004 and NFR-007/NF-007 are supported by exact reference relationships, actor-versus-FK separation and proposed retirement/permission tests; these tables do not implement authentication or protected endpoints. FR-033/AT-033 covers fictional manifests/allowed pairs and wrong-target/rerun guards, with bootstrap still deferred. NFR-017/NF-017/SEC-002 retains synthetic-only and no-secret evidence handling; no scan is claimed. NFR-019/NF-019 traces normalized keys, explicit native-object preservation and modular ownership. Feature-local traceability is refined for these five rows only; canonical IDs/priorities/statuses, original SC cases and approval rows are unchanged. Delegation is NOT GRANTED / UNVERIFIED and implementation/SQL remain NOT AUTHORIZED.
+
 ## Sources cross-referenced
 
 All paths below are repository-root relative.

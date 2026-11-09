@@ -4,6 +4,8 @@ Status: **PROPOSED / NEEDS APPROVAL**. No schema/migration/DDL generation or dat
 
 Trace: FR-001/002/004/025/027/033/035; scope support under FR-006 remains P1 management; NFR-005/007/008/010/015/017/018/019/024/025. E18 is an early supporting dependency for FR-019/NFR-005/022, not an implemented inbox. All canonical FR/NFR/AT IDs and existing scenario assertions are preserved. Supplemental test partitions below are proposed specifications linked to existing IDs, not executed tests or new canonical IDs.
 
+03B.0 refines only Stage 1 in [stage1-technical-corrections.md](stage1-technical-corrections.md): seven explicit CHECK candidates, Unicode name blank detection, proposed strict ASCII code/C collation, district-first reference locking, role matrix and immutable-reference lifecycle. All new policy choices are PENDING; delegation is NOT GRANTED / UNVERIFIED and implementation/SQL remain NOT AUTHORIZED. Stage 2/3 inventories and broader D/C decisions are unaffected.
+
 ## Stage grouping and dependency audit
 
 | Stage | Exact proposed Prisma model → PostgreSQL table | External FK dependencies | Enablement / fixtures |
@@ -36,6 +38,8 @@ Type mapping follows the [Prisma v7 schema reference](https://www.prisma.io/docs
 Inherited M/A/B fields above plus each table's rows below define every proposed column. NN = NOT NULL; NULL = nullable. All values remain blocked pending sign-off; any field/policy variation must update this inventory, catalogue and tests before migration generation.
 
 ### Stage 1 — District / districts (E01, base M)
+
+Both Stage 1 code columns retain varchar(32), with **proposed built-in deterministic C column collation** and exact full-string uppercase ASCII grammar from stage1-technical-corrections.md. This added native collation setting is PENDING acceptance and must later be pinned in reviewed SQL/catalog checks; it is not represented by the scalar annotation alone. Name bounds remain 100/160 with explicit B-aware nonblank checks and localized-text preservation.
 
 | Scalar field | Proposed Prisma type/native annotation | PostgreSQL type | Nullability | Default |
 |---|---|---|---|---|
@@ -203,7 +207,9 @@ Parents have list backrelations except User.notification_stream, which is option
 
 ## Native CHECK inventory and enforcement boundary
 
-Object names and exact row-local expressions below are proposed for review, not executable SQL files. For every M table add `<table>_version_ck` expression `version>=1`. For each required nonblank string in the scalar inventory, propose `<table>_<column>_text_ck` expression `length(btrim(column))>0`; for nullable reason_code use `reason_code IS NULL OR length(btrim(reason_code))>0`. Varchar bounds already cap stored text. Additional canonical email/code formats, stronger password limits and action/reason vocabularies remain OPEN; no unsupported regex is invented.
+Object names and exact row-local expressions below are proposed for review, not executable SQL files. For every M table add `<table>_version_ck` expression `version>=1`. **Stage 1 exception/refinement:** its exact seven CHECK candidates are listed in stage1-technical-corrections.md. The two `<table>_code_text_ck` expressions use its strict ASCII/C grammar and the two `<table>_name_text_ck` expressions use `char_length(translate(name, B, ''))>0` with its exact B literal inlined. These replace default-btrim shorthand for E01/E04; no redundant status/code nonblank checks are added. Exact W/B/code/collation choices are PENDING, not approved policy.
+
+For other stages only, the earlier required-nonblank candidate remains `<table>_<column>_text_ck` with `length(btrim(column))>0`; nullable reason_code uses `reason_code IS NULL OR length(btrim(reason_code))>0`. These other-stage candidates are outside 03B.0 and must not be described as comprehensive Unicode whitespace validation. Varchar bounds cap stored text but PostgreSQL trailing-space/cast behavior is not a substitute for application length checks. Additional canonical email/other-code formats, stronger password limits and action/reason vocabularies remain OPEN.
 
 | Stage / proposed constraint name | Candidate expression / native responsibility | Service-only or unresolved responsibility |
 |---|---|---|
@@ -254,11 +260,12 @@ All tests in this section are **PLANNED / NOT EXECUTED**. On an expressly author
 ### Stage 1 operational gates
 
 - **Authorization/approvals:** D-S02/D-S15 scoped geometry/integrity; D-S13/D-S18 fictional provisioning and audit path; related D-004/D-001. No organization administrator, public org-creation API or global creation authority is granted by inserting a table definition. Sign-off on exact reference fields/codes and nonblank checks required.
+- **03B.0 review boundary:** Documentation corrections only. The DEV-STAGE1 governance change remains unadopted, delegation NOT GRANTED / UNVERIFIED and exact design acceptance PENDING. Proposed name/code/collation, immutable identifiers, reference lock/role matrix and lifecycle choices require explicit scoped review. D-S13/D-S18 bootstrap/audit behavior stays deferred; this correction grants neither a bootstrap nor a broader identity-policy exception.
 - **Ordering/recovery:** District and Organization before OrganizationDistrict. Review one additive transactional stage and rollback of failure before commit in isolation. On later app rollback retain any acknowledged data; no DROP/down/reset. Stop stage chain on failed/colliding object; retain disabled domain features and inspect checksum/catalog before reviewed forward fix.
 - **Fixtures:** After all stages/privileges, reviewed offline bootstrap can insert two fictional orgs/two approved district codes and permitted mappings with same-transaction audit; no committed pre-audit bootstrap in stage 1. Stage-local FK/UQ/CHECK tests use rollback-only isolated rows. No real names, victim locations or credentials.
-- **Unit tests:** FR-004/NFR-007 policy rejects inactive org/district/mapping, absent explicit context and attempted role/wildcard inference; FR-033 fixture manifest/target guard; stable code format rules only once signed.
-- **Integration/negative tests:** AT-004/033, SEC-001/002, SC-04/05/31/40: duplicate codes/pairs, absent parent, NULL keys, blank code/name, invalid organization status and RESTRICT parent UPDATE/DELETE fail; wrong target/manifest fails before writes; transaction failure leaves no partial stage in isolated rehearsal. No authentication endpoint exists from these tables.
-- **Catalog assertions:** 3 planned tables; 3 PKs, 2 code UQs, 2 validated RESTRICT FKs, exact fields/defaults/checks and reverse mapping index, effective ownership review. No users, memberships or grant bootstrap yet.
+- **Unit tests:** FR-004/NFR-007 policy rejects inactive org/district/mapping, absent explicit context and attempted role/wildcard inference; FR-033 fixture manifest/target guard; exact code/full-string and W/B/name-length rules only once signed. See S1-01–S1-16 in [test-cases.md](test-cases.md), all PLANNED / NOT EXECUTED.
+- **Integration/negative tests:** AT-004/033, NF-007/017/019, SEC-001/002, SC-04/05/24/31/32/39/40: all required NULLs, invalid/missing UUIDs, duplicate codes/pairs, version 0/negative/defaults, blank/Unicode/length/status boundaries and RESTRICT parent UPDATE/DELETE fail; valid N:M succeeds. Wrong target/manifest and unauthorized FK-valid pairs fail before writes. Future role/SET ROLE/ownership, immutable identifier, inactive-pair reinsert/reactivation, district-retirement races and native preservation partitions have separate execution gates; no committed unaudited Stage 1 writer is introduced. Transaction failure leaves no partial stage in isolated rehearsal. No authentication endpoint exists from these tables.
+- **Catalog assertions:** 3 planned tables; exact 18 NN fields/defaults, 3 PKs, 2 code UQs, 2 validated nondeferrable RESTRICT FKs, seven candidate CHECKs, proposed C code-column/UQ collations and reverse mapping B-tree, plus effective role/ownership review. No users, memberships or grant bootstrap yet. Native SQL CHECK/collation preservation through a later unrelated migration must be verified independently of Prisma schema-only diff.
 - **Endpoint preconditions:** Existing liveness/SELECT-only readiness behavior unchanged; **all new domain endpoints remain unavailable** after stage 1.
 
 ### Stage 2 operational gates
@@ -283,6 +290,8 @@ All tests in this section are **PLANNED / NOT EXECUTED**. On an expressly author
 - **Endpoint preconditions:** No endpoint is enabled merely because stage 3 exists. Require signed feature spec/actor/contract, completed RED/GREEN/security/concurrency/regression evidence, reviewed target/migration/rollback plan and separate explicit endpoint implementation/enabling authorization. Personal profile/inbox endpoints remain out of slice (their tables absent); org management remains P1. If any identity action requires notifications, revise approved slice to include inbox/outbox atomically before enabling it; stream alone is not FR-018/019 functionality.
 
 ## Effective privilege and migration safety proposal
+
+For Stage 1 reference tables specifically, [stage1-technical-corrections.md](stage1-technical-corrections.md) supplies a PENDING runtime/owner/bootstrap/maintenance matrix: no runtime table access; future trusted offline writers only after separate authority/target/audit gates; no non-owner key/code/created_at UPDATE, DELETE/TRUNCATE or owner SET ROLE paths. Row-locking UPDATE privilege and owner/direct-SQL exceptions are explicit. No role/grant is installed or selected here.
 
 Read-only runtime grant lookup is proposed for E23; runtime gets **no E23 INSERT/UPDATE/DELETE/TRUNCATE, owner role, grant option or alternate SECURITY DEFINER bypass**. Offline bootstrap/maintenance role alone may mutate grants under reviewed manifest, target, audit and revocation transaction. This extends the earlier audit-only role checklist as a **new unapproved privilege proposal**, not an installed permission change. Review schema/table ownership, PUBLIC privileges, role memberships, inherited/SET ROLE access, schema CREATE, function/search_path paths and default privileges; don't rely solely on direct ACL entries. Audit runtime gets INSERT plus policy-filtered SELECT, no mutation/destruction/DDL/owner paths; raw SELECT still does not enforce row scope. Database owner/superuser tampering remains outside the application append-only guarantee. [PostgreSQL 17 privileges](https://www.postgresql.org/docs/17/ddl-priv.html).
 

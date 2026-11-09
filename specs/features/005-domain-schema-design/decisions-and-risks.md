@@ -2,6 +2,19 @@
 
 Every row remains **UNAPPROVED (PROPOSED or PENDING)**; original D-001–D-012 stay OPEN. Backend/product owner selected the flexible scoped architecture as preferred direction in 03A.2, not completed sign-off. The current 18-row status/scope/original-link record is [approval-record.md](approval-record.md). Owner denotes the human role that must decide, not an approval claim. Recommendations define a coherent candidate for review; alternatives remain available. No security/privacy policy is amended here.
 
+## 03B.0 Stage 1 decision refinements — all PENDING
+
+[stage1-technical-corrections.md](stage1-technical-corrections.md) resolves missing design detail for E01/E04/E05 only. It does not close D-S02/D-S15, D-004 or any other decision. Explicit choices for human review:
+
+| Scope / related existing decision | Recommended candidate and alternative | Human decision / residual risk |
+|---|---|---|
+| Text/codes; D-S02/D-S15 structure | Exact 25-character W and B=W+U+200B/U+FEFF blank sets; Unicode names; strict uppercase ASCII codes and C code-column collation rather than opaque codes or input casefold/trim | Product/backend acceptance of format/vocabulary/blank handling PENDING; code collation is an added native setting requiring SQL/catalog proof, not a compiled Prisma guarantee |
+| Retirement; D-S02/D-S15 integrity | District→organization→pair FOR UPDATE with current-state rechecks and retained history; narrower locks require a separately reviewed protocol | Backend/security/QA acceptance PENDING; serializing a whole district can increase contention; exact budgets and future active-work handover still unresolved |
+| Reference permissions; D-S15 direct SQL boundary | No current runtime table access; owner separated from future trusted bootstrap/maintenance with explicit column ACLs | Security/operator acceptance PENDING; locking needs real UPDATE capability; a trusted offline role can bypass manifest/version/audit service rules and owner powers cannot be removed by ordinary ACLs |
+| Identifier/lifecycle; D-S02/D-S15 | Immutable UUID/code/pair/created_at; no deletion/reuse; explicit same-row reactivation and affected-pair review | Product/security acceptance PENDING; parent reactivation can restore eligibility of retained active mappings; no automatic grant creation, fixture overwrite or active-work cancellation |
+
+Delegation remains NOT GRANTED / UNVERIFIED; the DEV-STAGE1 governance proposal is unadopted. No authority or permissions are installed by recommending these choices. Planned S1-01–S1-16 partitions provide future falsifiable checks, not a security assessment or passed acceptance evidence. All other entity/identity/session/location decisions retain their existing scope/status.
+
 ## Existing decision register — preserved
 
 | Existing ID / owner | Alternatives and trade-offs | Recommended design default, pending approval | Schema/migration consequence |

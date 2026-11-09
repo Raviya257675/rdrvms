@@ -282,3 +282,57 @@ All commands exited **0**. Documentation validator PASS; **3 documentation unit 
 The audit script is read-only and temporary at /tmp/rdrvms-03a4-audit.py, not installed/committed application test code. Counts and FK checks are structural document evidence, not actual PostgreSQL constraints/catalog/privilege enforcement or pinned-version Prisma compilation. Existing validator is shallow and no CI execution is claimed. No runtime RED/GREEN or migration tests were executed.
 
 Final approval-readiness verdict: **NEEDS ADDITIONAL APPROVAL**. Specific remaining gates are scoped reviewer-role/option/field/constraint/parameter/amendment evidence, C-11 constitutional authority, FR-027 capability/issuer/recovery boundaries, credentials/session/CSRF/verification policy, audit/stream/native privilege decisions, source synchronization, exact repository implementation/test-target/SQL/checksum/operator/recovery authorization and future behavioral evidence. The handoff is prepared; no database implementation or SQL execution begins.
+
+## 03B.0 Stage 1 technical-design corrections — 2026-11-10
+
+Authorized work: draft proposed documentation corrections only for E01 districts, E04 organizations and E05 organization_districts. Branch remained `feature/database-geography-stage1`; HEAD remained `c9969c3d048446961445f1ef781e57bff487a4b6`. Starting worktree already contained a modified approval-record.md and an untracked stage1-development-approval-proposal.md; those contents were preserved and refined only for this authorized design scope. No branch switch, commit, push, merge, deployment or external contact.
+
+Read AGENTS, constitution, mandatory threat model and requested catalogue/stages/constraints/transactions/tests/approval/proposal documents. Official PostgreSQL 17 string/constraint/lock/SELECT/privilege, Prisma v7 and Unicode 17.0 references are linked beside the proposed rules in [stage1-technical-corrections.md](stage1-technical-corrections.md). Sources explain mechanisms, not human acceptance or pinned-version execution proof.
+
+### Technical corrections and remaining choices
+
+The proposal defines explicit W=25/B=27 blank-detection sets, preserves meaningful localized names, recommends strict uppercase ASCII machine codes with C column collation and full input consumption, enumerates seven native CHECK candidates, introduces consistent district→organization→pair locking and retirement races, specifies runtime/owner/bootstrap/maintenance privileges including lock-taking UPDATE capability, and separates immutable identifiers/history from what FKs alone enforce. Sixteen local S1 test partitions were drafted before the detailed correction document; they extend existing SC/AT/NF/SEC traces without changing the original 40 SC assertions or canonical statuses. No artificial application RED/GREEN result is claimed for documentation changes.
+
+Product/security acceptance of the exact whitespace/code/collation/vocabulary, lifecycle/reactivation consequences, lock/handover policy and trusted offline-writer privilege boundary remains PENDING. No live ACL, auth/RBAC/session/location policy or authoritative source was changed. D-S02/D-S15 and all other approval rows remain unchanged, not APPROVED. Delegation remains NOT GRANTED / UNVERIFIED; implementation is BLOCKED / NOT AUTHORIZED and SQL execution is NOT AUTHORIZED. The DEV-STAGE1 proposal is unadopted. This AI-assisted draft does not supply independent human security sign-off.
+
+### Exact changed-file inventory for this task
+
+Only specs/features/005-domain-schema-design/ files were edited:
+
+| File | Change |
+|---|---|
+| stage1-technical-corrections.md (new) | Detailed six-finding proposal, policy alternatives, seven CHECK candidates, locks, role/lifecycle matrix and recovery review |
+| test-cases.md | Sixteen PLANNED S1 partitions covering all requested boundaries and execution gates; original SC rows retained |
+| entity-catalogue.md | Scoped E01/E04/E05 text, code, actor, lifecycle and lock refinements |
+| constraints-and-indexes.md | Stage 1 CHECK/collation/native-preservation and enforcement-boundary clarification |
+| identity-migration-stages.md | Stage 1 check/collation/test/role handoff; scalar/key/FK/index topology and later stages retained |
+| transactions.md | Proposed district-first shared reference lock order and race-test handoff |
+| decisions-and-risks.md | PENDING Stage 1 choices/tradeoffs; existing decision rows retained |
+| requirements-audit.md | Current documentation-only scope and FR/NFR acceptance limitations |
+| traceability.csv | Design responsibility/entity refinements for FR-004/033 and NFR-007/017/019 only; metadata/statuses retained |
+| identity-implementation-handoff.md | Current scoped correction link; earlier inventory shorthand and authorization boundary clarified |
+| stage1-development-approval-proposal.md (pre-existing untracked file) | Candidate technical inventory synchronized; G1–G6 remains unadopted |
+| approval-record.md (pre-existing modified file) | Link/note for unaccepted correction proposal; existing approval/delegation/signature/status rows preserved |
+| evidence.md | Actual scope, changes, validation and unverified behavior recorded |
+
+### Validation commands and actual results
+
+Executed from repository root:
+
+```bash
+python3 -B scripts/validate_pack.py
+python3 -B -m unittest discover -s scripts -p 'test_*.py'
+python3 -B /tmp/rdrvms-03b0-audit.py
+git diff --check
+git diff --exit-code -- apps/api apps/web infra docs .specify scripts tests .github AGENTS.md
+```
+
+Documentation validator: exit **0**, `PASS: documentation manifest, requirement/test references and draft OpenAPI JSON validated.` Existing documentation unit tests: exit **0**, **Ran 3 tests; OK**. Structural traceability audit: exit **0**, 60 canonical/local FR/NFR mappings and 78 known acceptance IDs retained; only five intended local responsibility/entity rows changed, metadata/priorities/statuses preserved; original 40 SC cases, 18 approval rows and decision/conflict rows unchanged; original stage/scalar/key/FK/index inventories preserved; seven named Stage 1 CHECK candidates, W=25/B=27 and 16 planned S1 partitions; relative links, Markdown table widths and whitespace checked including untracked files. Git whitespace and excluded-path checks: exit **0**, no output. The final scope check confirms no out-of-folder worktree paths or staged changes, unchanged branch/HEAD and the 13 documents above.
+
+The read-only structural audit script and pre-edit documentation snapshot are temporary /tmp artifacts, not repository/application code or installed dependencies. The audit validates document consistency, not SQL syntax, applied constraints, actual roles, race outcomes, security approval or complete schema correctness. No CI run/coverage or secret-scan result is claimed.
+
+### Unexecuted work and final status
+
+All S1-01–S1-16 and original SC operational tests remain PLANNED / NOT EXECUTED. No application tests/build/typecheck, Prisma models/configuration/validation/generation, migration generation/application/push/reset, PostgreSQL access, catalog/ACL/data query, seed, operational writer, concurrency/privilege test, restore, deployment or environment-secret read occurred. No authoritative governance/requirements/API/infra/dependency/runtime/frontend file changed. Security/privacy impact now is proposed-document clarification only; no real personal data or live privilege changes. Migration/deployment impact now: none.
+
+Final technical-document verdict: **READY FOR HUMAN DESIGN REVIEW**. The six missing specifications have draft corrections and falsifiable planned tests; proposed product/security choices, exact acceptance, delegation and future implementation/SQL/target evidence remain outstanding. This verdict does not authorize implementing or applying the schema. Stop after these draft corrections.

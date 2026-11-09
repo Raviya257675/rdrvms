@@ -2,6 +2,8 @@
 
 Status: **all tables, field bounds and defaults below are proposals, not executable schema or approved policy**. Scope and alternatives: [spec.md](spec.md), [decisions-and-risks.md](decisions-and-risks.md). Exact SQL constraints/indexes and service responsibilities are in [constraints-and-indexes.md](constraints-and-indexes.md); transaction protocols are in [transactions.md](transactions.md).
 
+03B.0 refines **only E01/E04/E05** in [stage1-technical-corrections.md](stage1-technical-corrections.md). Its exact Unicode blank detection, strict ASCII code/C-collation recommendation, immutable identifiers, reference lock protocol, role matrix and reactivation choices are PENDING human acceptance. No executable schema, operational permission or approval is added.
+
 ## Conventions applying to every entry
 
 - `NN` = NOT NULL; `?` = nullable; `PK`, `UQ`, `FK` identify keys. Unmarked defaults: none. Every FK uses PostgreSQL enforcement and proposed `ON DELETE RESTRICT`, `ON UPDATE RESTRICT`; any exception needs approval. Soft retirement does not remove FKs or grant access.
@@ -17,7 +19,7 @@ Status: **all tables, field bounds and defaults below are proposals, not executa
 
 Purpose/trace: approved administrative geography for FR-005/007/010/014, NFR-007/009. Attributes: `code varchar(32) NN UQ`; `name varchar(100) NN`; `active boolean NN default true`. Candidate key is code; PK from M. Code/name are fictional-demo reference labels, not private addresses. No province, divisional secretariat or spatial hierarchy is implied.
 
-Relationships: district 1:N organization_districts, membership_districts and incidents; 1:N optional home districts on profiles. Ownership: reference-data administrator only; public safe code/name can be published. Checks: nonblank code/name, stable canonical code format; retire via active=false, preserve historical references. Queries: code lookup via UQ; district-based boards via child indexes. Reference edits use version checks and audit; deletion/retention class R below.
+Relationships: district 1:N organization_districts, membership_districts and incidents; 1:N optional home districts on profiles. Ownership: separately approved reference-data actor, not an inferred global administrator; no Stage 1 runtime writer. Public safe code/name exposure requires its own reviewed DTO. Proposed checks: strict full-string uppercase ASCII code grammar with C collation and Unicode-aware name blank detection as defined in stage1-technical-corrections.md, replacing default-btrim shorthand. UUID/code/created_at are proposed immutable; names preserve legitimate localized text. Retire via active=false under the common district-first lock protocol, version/time and mandatory audit; preserve historical references. Reactivation requires explicit review of resulting eligible pairs, not a fixture rerun. Queries: code lookup via UQ; district-based boards via child indexes. No physical deletion or code reuse; retention class R below. Policy acceptance remains PENDING.
 
 ### E02 — users (M)
 
@@ -47,13 +49,13 @@ Relationships: user 1:N markers. Owner: identity/admin service; self-registratio
 
 Purpose/trace: scope for FR-004/006/014/021; attributes `code varchar(32) NN UQ`, `name varchar(160) NN`, `status varchar(16) NN default 'ACTIVE' CHECK IN ('ACTIVE','INACTIVE')`. PK M; no unique organization name assumption.
 
-Organization 1:N district mappings, memberships, incidents, requests, assignments and idempotency records; P1 inventory. Only approved admin operations manage it; no global role assumed. Inactivation blocks new scoped work and preserves history; active work requires human handover rather than cascade cancellation. Code lookup/UQ; scope-query indexes live on children. Edits lock org and check version; R retention. P0 may use reviewed fictional bootstrap rows without implementing P1 management UI.
+Organization 1:N district mappings, memberships, incidents, requests, assignments and idempotency records; P1 inventory. Only separately approved operations manage it; no global role assumed and no Stage 1 runtime writer. Inactivation blocks new scoped work and preserves history; active work requires human handover rather than cascade cancellation. Proposed code/name checks use the same explicit ASCII/C-collation and localized-name rules as E01, with name bound 160. UUID/code/created_at remain immutable; name/status edits use version/time/audit and the common lock order whenever districts/mappings are involved. Parent reactivation requires a reviewed affected-pair manifest and does not reactivate inactive mappings. Code lookup/UQ; scope-query indexes live on children. No deletion/code reuse; R retention. P0 may later use separately reviewed fictional bootstrap after audit dependencies and privileges, without implementing P1 management UI. These choices remain PENDING.
 
 ### E05 — organization_districts (B)
 
 Purpose/trace: D-004; FR-004/007/014; NFR-007. Attributes: `organization_id uuid NN FK organizations`, `district_id uuid NN FK districts`, `active boolean NN default true`; PK `(organization_id,district_id)`.
 
-N:M org/district boundary. Incidents reference this pair; membership grants must reference it too. A valid FK is not proof the mapping is active. Admin service locks organization/mapping before deactivation and audits; no direct deletion in MVP. PK serves org lookup; reverse index `(district_id,organization_id)` serves approved intake routing. Public routing must use explicitly safe active org data only. Retention R.
+N:M org/district boundary. Incidents reference this pair; membership grants must reference it too. FKs establish existing parents, not an active or authorized association. Proposed future writers lock district, then organization, then existing pair, recheck current activity/authority/manifest and audit in one transaction; absent pairs are serialized through parent locks and PK uniqueness. No Stage 1 writer/bootstrap is enabled. Pair/created_at are immutable; no direct deletion, key reassignment or delete/reinsert in MVP. Reactivation is an explicitly authorized change of the same inactive row, not INSERT/upsert or implicit parent/fixture reactivation. Retained active mapping flags can become eligible on parent reactivation only after the affected pairs are reviewed. PK serves org lookup; reverse index `(district_id,organization_id)` serves approved intake routing. Public routing must use explicitly safe active org data only. Retention R; lifecycle/permissions remain PENDING as specified in stage1-technical-corrections.md.
 
 ### E06 — memberships (M)
 

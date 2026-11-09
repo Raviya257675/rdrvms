@@ -2,6 +2,8 @@
 
 Status: PROPOSED; no DDL, Prisma change, query execution or migration is authorized. [entity-catalogue.md](entity-catalogue.md) defines every proposed field and nullability. [transactions.md](transactions.md) defines cross-row invariants. The ER diagram shows 23 MVP tables, excludes six P1 tables and intentionally omits logical polymorphic subject/target/result arrows.
 
+03B.0 Stage 1 refinement: [stage1-technical-corrections.md](stage1-technical-corrections.md) defines the exact seven CHECK candidates for E01/E04/E05, explicit W/B Unicode blank sets, proposed ASCII code grammar and per-code-column C collation. Default btrim is insufficient for name blank detection. All formats/collations/lifecycle/privilege choices remain PENDING; other entities' checks are not changed by this scoped correction.
+
 ## Normalization and relationship review
 
 Use normalized role, organization/district and skill bridges instead of JSON grant/skill arrays. A volunteer may belong to many organizations and hold several scoped roles. One incident has exactly one owning org and district; each request/assignment inherits that org. Profile home district is optional, while incident district is mandatory. No global admin capability or cross-org shared request is implicit.
@@ -42,7 +44,7 @@ Decimal API decision C-10/D-S16: OpenAPI currently says quantity is JSON number.
 |---|---|---|
 | K01 | UNIQUE users.email_normalized; NOT NULL credential/consent; ACTIVE implies verified timestamp | FR-001, prevent duplicate accounts and bypass of verification |
 | K02 | UNIQUE memberships(user_id,organization_id,role); composite grant FKs and assignment membership user/org FKs | FR-004/006/014, wrong-org and wrong-user link rejection |
-| K03 | UNIQUE reference codes; PK bridge pairs; all references RESTRICT on delete/update | NFR-004/007/019, no duplicate grant links or silent history erasure |
+| K03 | UNIQUE reference codes; PK bridge pairs; all references RESTRICT on delete/update; E01/E04 proposed exact ASCII code/C-collation and B-aware name checks | NFR-004/007/019; prevents duplicate stored links and referenced-parent loss; authorization, unreferenced deletion and identity immutability still need privileges/services |
 | K04 | incidents UNIQUE(id,organization_id); FK(org,district) to organization_districts | FR-007/014, owned reporting and district boundary |
 | K05 | requests FK(incident_id,organization_id); UNIQUE(id,organization_id); assignments/P1 allocations FK(request,org) | FR-011/014/022, cross-org chains rejected even via SQL |
 | K06 | Partial UNIQUE assignments(relief_request_id,volunteer_id) WHERE status IN ('PENDING','ACCEPTED','IN_PROGRESS') | FR-016, NFR-004: one active pair; include PENDING reservations |
@@ -58,6 +60,8 @@ Decimal API decision C-10/D-S16: OpenAPI currently says quantity is JSON number.
 | K16 | account_security_grants UQ(user_id,capability), capability constant, status/revoker/time checks, actor/subject FKs; audit authorization_context/org consistency | FR-004/025/027/035; global exception is explicit and separately approved; services still validate grant authority |
 
 Composite referenced columns have explicit non-partial unique keys. Never use the active-pair partial unique index as an FK target. All child FK columns receive a covering leading-column index or a documented small reference/bridge exception; a foreign key is not itself a child lookup index.
+
+For E01/E04/E05, keep 3 PKs, 2 ordinary code UQs, 2 validated nondeferrable RESTRICT FKs and the reverse bridge B-tree. No redundant code/status nonblank check is needed beside approved grammar/membership checks. Code UQs reserve codes across inactive rows. Proposed identifier immutability and no unreferenced deletion are enforced through the future reference permission/workflow boundary, not falsely attributed to RESTRICT. Full matrix, maintenance/owner exceptions and seven exact CHECK names are in stage1-technical-corrections.md. Catalog/drift assertions must preserve code-column/index collation and native CHECK expressions through later changes; Prisma schema-only validation/diff is insufficient.
 
 Example constraint intent (documentation only, not a migration script):
 
