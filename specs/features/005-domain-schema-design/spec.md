@@ -60,3 +60,9 @@ The proposal addresses NFR performance/resource bounds through indexes, keyset p
 Human approval of this design does not itself authorize executing migrations. A subsequent explicit implementation instruction, approved feature slice, tests-first evidence and reviewed migration plan are required. Stop after this proposal.
 
 Current reconciliation entry point: [reconciliation-summary.md](reconciliation-summary.md); [source amendments](source-amendments.md), [18-row approval record](approval-record.md), [review handoff](review-handoff.md) and [smallest identity/scope slice](identity-scope-readiness.md). Verdict: **READY FOR HUMAN SIGN-OFF**, not accepted or implementation-ready.
+
+## 03A.3 approval verification and migration proposal
+
+Current deliverables: [approval verification](approval-verification.md) and [detailed identity migration stages](identity-migration-stages.md). PR #5 has general approval but no verified decision-specific acceptance or required-role evidence. No authoritative amendment applied, no domain attributes approved for implementation. All original requirement/decision IDs and 23 proposed entities are preserved.
+
+Current verdict: **NEEDS APPROVAL**; implementation/migrations **BLOCKED**. This supersedes the earlier READY FOR HUMAN SIGN-OFF delivery label as an approval-readiness assessment; it does not erase historical design work or claim that the proposal has been accepted. The exact 12-entity identity slice may be staged 3/4/5 as schema-only work after approval; no interim endpoints or unaudited operational bootstrap.

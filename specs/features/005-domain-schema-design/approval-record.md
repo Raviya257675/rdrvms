@@ -1,6 +1,6 @@
 # Human approval record — all 18 decisions
 
-Status: **PENDING — no complete sign-off evidence supplied**. The backend/product owner selected the recommended flexible scoped architecture as the preferred direction through Master Prompt 03A.2, received 2026-11-09. This is recorded direction/authorization to prepare design documents only. No reviewer name, approval date, signature or external evidence URL was supplied; all such fields below are intentionally blank. The received date is not an approval date.
+Status: **PENDING — no complete sign-off evidence supplied**. The backend/product owner selected the recommended flexible scoped architecture as the preferred direction through Master Prompt 03A.2, received 2026-11-09. This is recorded direction/authorization to prepare design documents only. No decision-specific reviewer name, approval date, signature or evidence URL was supplied; all such fields below are intentionally blank. A general GitHub review was discovered during 03A.3 and is assessed separately in approval-verification.md; it does not satisfy these sign-offs. The received date is not an approval date.
 
 D-001–D-012 in docs/decisions/open-questions.md remain OPEN. Related/dependency links below do not claim that the original register already decided password parameters, global authority, capacity or serialization. No new original D-ID is fabricated. PROPOSED denotes a recommended reconciliation; PENDING denotes an unresolved/dependent selection. Neither means approved.
 
@@ -34,3 +34,7 @@ Each required reviewer must supply their own name, date, exact accepted option/p
 For D-S04/D-S05 approve every value in security-parameters.md or list explicit remaining blockers. Verification lifetime/delivery/rate limits, library/dependency consent, CSRF storage/reissue and development cookie conditions cannot be filled by implication. For D-S13 signing the synthetic-data boundary leaves numeric retention OPEN. D-S06–D-S11/D-S14/D-S16/D-S17 remain pending unless reviewed individually.
 
 Current implementation/migration authorization for **every row: NOT AUTHORIZED**. Constitutional ratification, source synchronization, SQL review, disposable target approval, failing behavioral tests and a separate implementation request remain prerequisites. No complete-design acceptance is recorded.
+
+## 03A.3 verified evidence disposition
+
+[Approval verification](approval-verification.md) records the exact PR #5/review URL, GitHub account, submitted timestamp, reviewed commit and generic “Good” review. Its APPROVED state does not identify accepted D-S options or required supervisor/security roles. No accepted decision or authoritative amendment was verified; all 18 verification outcomes remain PENDING and this table's candidate statuses/name/date/evidence/authorization fields are preserved. The general review is not silently promoted into any approval field.

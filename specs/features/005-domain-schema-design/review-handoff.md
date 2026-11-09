@@ -17,3 +17,9 @@ Review order: sign the authority/actor boundary and exact security parameters, r
 Open corrections to decide, not agent-selected approvals: reporter drafts, incident reviewer capability, eligible parent/request states, assignment progress and request confirmation, multiple volunteers, public aggregation/coarsening, intake routing, unit taxonomy, inbox recovery/retention and Decimal serialization. Use the amendment matrix to accept/revise each rather than approving all by implication. Original D-001–D-012 remain OPEN until signed updates are made to their register.
 
 Current evidence and the full changed-file inventory are in [evidence.md](evidence.md). Documentation checks establish structural consistency only; no PostgreSQL/security/session/migration test or completed threat assessment is claimed. Synthetic academic data only; no real mail/SMS/user pilot, external contact or deployment. No source amendment, commit or migration is performed by this handoff.
+
+## 03A.3 evidence follow-up
+
+Current verdict: **NEEDS APPROVAL**. Consult [approval-verification.md](approval-verification.md) for actual PR #5/review evidence and why its generic “Good” approval does not satisfy any required option/role sign-off. Consult [identity-migration-stages.md](identity-migration-stages.md) for proposed physical 3/4/5 stage details and blocked fields/privileges/tests. No reviewer identity/role/date is invented; observed GitHub metadata is kept separate from blank decision approval fields.
+
+Reviewers must explicitly accept/revise their D-S options, exact numeric/library/CSRF/verification policies and source amendment scope. Backend/product preference and a merged PR cannot stand in for independent security/supervisor/constitutional review. No authoritative source change, endpoint enabling, fixture or database implementation occurred.

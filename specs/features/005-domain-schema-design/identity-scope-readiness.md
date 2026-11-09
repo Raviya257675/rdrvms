@@ -81,3 +81,11 @@ Migration review must examine generated plus native SQL, effective role ownershi
 - Exact physical migration plan/SQL, isolated target, TDD evidence, safe fixtures/recovery and separate implementation request are absent. Current schema and all database state remain untouched.
 
 Other D-S06/07/08/09/10/14/16/17 choices block their dependent domain slices and are not silently closed by identity readiness. No migration or runtime implementation begins from this document.
+
+## 03A.3 staging and evidence clarification
+
+The detailed proposal is [identity-migration-stages.md](identity-migration-stages.md): Stage 1 has three reference/scope tables, Stage 2 four identity/membership tables, Stage 3 five token/session/stream/audit/global-grant tables. Its scalar/model/FK/native-check/index tables make the physical proposal reviewable; no executable schema exists. Earlier ordering above remains a dependency guide, not a requirement to install all 12 in one migration.
+
+“Smallest 12-entity set” is conditional on retaining the current full identity/scope/global-actor and mandatory account-stream provisioning proposal; it is not a proof of the minimum first DDL transaction. Smaller schema-only stages are possible with all new endpoints and permanent bootstrap disabled. An 11-entity alternative omitting streams requires an explicit lifecycle amendment. This clarification accepts no new scope or policy.
+
+No option-specific approval is verified in [approval-verification.md](approval-verification.md). All 18 decision verifications remain PENDING; fields, C-11 and global authority remain blocked. The general GitHub review is not a supervisor/security or parameter sign-off.

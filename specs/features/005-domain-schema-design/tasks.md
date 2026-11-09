@@ -45,3 +45,13 @@ No migrations, schema generation, seeds, domain tests, authentication or APIs ha
 - [x] Extend planned negative/session/concurrency/bootstrap cases to SC-40 without removing earlier assertions.
 - [x] Record current docs validator/unit-test/structural/scope audit results in evidence.md after actual execution.
 - [ ] Obtain applicable signed source/policy/constitutional/security decisions; separately authorize implementation and migrations later.
+
+## 03A.3 approval verification and detailed stage proposal
+
+- [x] Verify clean required branch/head and read applicable source/approval/design constraints without environment values.
+- [x] Inspect GitHub PR #5/review head, account metadata, text and scope; record only observed facts, no role/signature inference.
+- [x] Record per-decision verification PENDING; no accepted option or authoritative correction verified.
+- [x] Prepare exact proposed 3/4/5 stage model/scalar/key/FK/check/index/fixture/catalog/test/recovery/endpoint inventory and identify blocked details.
+- [x] Carry pre-sign-off consistency gaps into proposed test/privilege/migration gates without altering old scenario assertions or canonical statuses.
+- [x] Record documentation validation/unit/traceability/model/stage/scope checks after actual execution.
+- [ ] Required humans provide option-specific reviewer-role evidence; then separately authorize source amendments, implementation and actual migrations. None supplied by generic PR approval or this task.
