@@ -26,7 +26,8 @@ export function createShutdown(
       }
       Promise.resolve().then(resources.close).then(
         () => clearTimeout(deadline),
-        () => { process.exitCode = 1; clearTimeout(deadline); },
+        // Failed cleanup may leave live handles; retain the original deadline.
+        () => { process.exitCode = 1; },
       );
     });
   };
