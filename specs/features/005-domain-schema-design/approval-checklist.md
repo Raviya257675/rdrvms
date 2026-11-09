@@ -60,3 +60,7 @@ Record accepted option, deviations, reviewer name, date and review link for each
 | Supervisor | | PENDING | |
 
 Approval scope must say whether it covers the full proposed model or only an individual feature slice and which open decisions remain blockers. A future migration requires its own reviewed SQL, target, TDD evidence, deployment/recovery plan and explicit authorization.
+
+## 03A.3 evidence and physical-plan review
+
+Current gate: NEEDS APPROVAL, see [approval-verification.md](approval-verification.md). General PR #5 approval does not complete any row above. Review [identity-migration-stages.md](identity-migration-stages.md) for exact proposed fields/Prisma models/native objects, 16 FKs in 3/4/5 schema stages, stage-specific RED/catalog/security/recovery evidence requirements and disabled interim endpoints. Every approval and implementation/migration gate remains incomplete until scoped human evidence is supplied.

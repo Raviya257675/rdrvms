@@ -59,3 +59,11 @@ Seed only the slice's dependencies, idempotently by stable fictional keys. Rerun
 Future checks must exercise blank disposable creation, upgrade from known prior schema, SQL catalog constraints/indexes, invalid direct SQL inserts, transaction rollback at audit/inbox/outbox steps, duplicate/capacity/stock races, compatibility smoke, seed repeatability, crash/restart retention, backup/restore and absence of secrets/PII. Merely running Prisma validate/generate is not proof of applied PostgreSQL integrity. Those tests are **not run** in this design milestone; [test-cases.md](test-cases.md) lists their intended acceptance.
 
 For the exact smallest proposed M1 object set, field approval state, ordering, bootstrap and blocker list, use [identity-scope-readiness.md](identity-scope-readiness.md). This supersedes any inference that the full 23-entity catalogue is a single migration.
+
+## 03A.3 detailed identity stage sequence
+
+[identity-migration-stages.md](identity-migration-stages.md) now defines the exact proposed Stage 1 (districts, organizations, organization_districts), Stage 2 (users, account_roles, memberships, membership_districts) and Stage 3 (email_verification_tokens, sessions, notification_streams, audit_events, account_security_grants), including full scalar/Prisma/native type inventories, keys/FKs/checks/index names, catalog assertions, fixtures, test partitions, recovery and endpoint gates. Requested grouping is FK-correct: 3/4/5 tables, 16 FKs with parents in the same or earlier stage.
+
+Stages are schema-only installation boundaries within the same future identity slice. No runtime endpoint or operational fixture is enabled after stage 1/2; mandatory user-stream provisioning and grant audit require complete stage 3 plus reviewed privileges. The first two schema stages must not become a temporary unaudited bootstrap or credential/session bypass. All model attributes/native objects/privileges remain proposals.
+
+[approval-verification.md](approval-verification.md) records PR #5's generic approval and its limits. No decision-specific accepted option was verified, so no authoritative source correction or migration is authorized. Verdict: NEEDS APPROVAL; implementation BLOCKED.

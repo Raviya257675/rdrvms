@@ -157,3 +157,69 @@ Current migration/deployment impact: **none**. Current security/privacy effect: 
 Assumptions: synthetic academic data only, no real mail/SMS/pilot; owner preference authorizes draft reconciliation, not source amendments. Sign-offs, C-11 constitutional changes, FR-027 actor/target authority, all security parameters/library consent and the exact first-slice SQL/target/recovery/TDD plan remain blockers. Dependent workflow/public-location/taxonomy/cursor/Decimal/retention decisions remain open as recorded.
 
 Final package verdict: **READY FOR HUMAN SIGN-OFF**. Implementation and migration readiness: **BLOCKED**. Supervisor, independent security, backend/product and frontend/API review (with QA/privacy/ops as applicable) must supply actual names/date/evidence and accepted scope before source synchronization, then separately authorize any implementation. Stop at the reconciliation package.
+
+## Current Master Prompt 03A.3 — approval verification and staged proposal
+
+Current work supersedes the earlier 03A.2 ready-for-sign-off delivery label as an approval-readiness verdict. Starting branch `feature/domain-schema-design` was clean at `5634e91512aec169d73a1398eedac68f6350562c`. No branch change, commit, push, merge or deployment was performed. Approved task scope is evidence verification plus proposed migration planning and documentation checks.
+
+### Accepted versus pending decisions and source impact
+
+[approval-verification.md](approval-verification.md) contains all 18 decision-specific checks and the actual observed external evidence. GitHub PR #5 is MERGED/APPROVED at current HEAD, with a single review by User-type login tharushikadilrukshi111-hash at 2026-11-09T16:23:26Z, review text “Good”, review URL ending #pullrequestreview-5828949975. PR body is an unfilled template; conversation and inline review comments returned empty lists. Reviewer-role mapping, accepted D-S option/parameter/deviation scope and constitutional/source-amendment sign-off are absent. These observed account/timestamp facts are not manufactured signatures. All 18 verification outcomes PENDING; original candidate statuses and all blank decision signature/date/evidence fields preserved.
+
+No accepted option/domain attribute/relationship/constraint is verified; implementation/migration authorization stays NOT AUTHORIZED. No authoritative correction was applied to AGENTS/constitution/SRS/RBAC/HLD/ADRs/security/OpenAPI/canonical traceability/tests. C-01–C-11 and D-001–D-012 remain unresolved/open. This task does not invent approval because the PR was merged or this prompt requested applying verified approvals.
+
+### Detailed proposal and test scope
+
+[identity-migration-stages.md](identity-migration-stages.md) defines the exact 12 proposed Prisma models and mapped tables in 3/4/5 stages: Stage 1 reference organization/district mapping; Stage 2 user/roles/memberships/district grants; Stage 3 token/session/stream/audit/account-security records. It includes all scalar/native types/nullability/defaults, proposed named PK/UQ/FK/CHECK/index objects, 16 FK relationships, stage-local catalog assertions, fixtures, authority implications, test partitions, recovery and endpoint gates. Full 23-entity catalogue/ER remains unchanged.
+
+Stages 1/2 install schema only; permanent operational account/grant bootstrap waits for stage 3 audit/stream/security privileges. Constraint tests may use isolated rollback-only fixtures; races requiring commits run against the complete disposable three-stage schema with full audited provisioning. No endpoint enabled by table presence. Notification obligations must be reviewed before any feature needing inbox/outbox; no stream-only claim of FR-018/019.
+
+All fields/native objects/privileges remain proposals, including new physical object names, a candidate 4096-byte audit-metadata bound and offline-only E23 SQL privilege separation. Session/hash/token/CSRF/cookie values and library consent remain unsigned. Test specifications add explicit SQL grant denial, high-impact confirmation/reason/version, CSRF binding/reissue, verification resend/limits and last-operator concurrency gates; all original 40 scenario rows are unchanged and unexecuted. No artificial runtime RED/GREEN or actual schema compilation is claimed.
+
+### Current changed-file inventory
+
+All changes are under specs/features/005-domain-schema-design/.
+
+| File | Change |
+|---|---|
+| approval-verification.md (new) | Actual GitHub evidence/scope assessment, 18 PENDING decision verifications, authoritative correction disposition |
+| identity-migration-stages.md (new) | Detailed three-stage physical model/type/constraint/index/FK/privilege/test/catalog/recovery proposal |
+| approval-record.md | General review observation/link, no decision row/signature/authorization change |
+| approval-checklist.md | Current evidence and staged physical-plan gate pointer |
+| identity-scope-readiness.md | Exact stage companion and conditional minimality/disabled interim features clarification |
+| migration-plan.md | 3/4/5 schema-stage sequence and audit/stream/endpoint dependencies |
+| requirements-audit.md | Actual approval/source disposition and unchanged IDs/policy status |
+| plan.md | 03A.3 files, evidence-first sequence and design-only restrictions |
+| tasks.md | Performed documentation work and remaining approval/implementation gates |
+| test-cases.md | Stage-specific future test partitions; restored header for SC-35–40 table; no old assertion changed |
+| spec.md | Current NEEDS APPROVAL outcome and stage proposal links |
+| reconciliation-summary.md | Current evidence outcome and full physical proposal entry point |
+| review-handoff.md | Actual evidence/role gaps and review follow-up |
+| evidence.md | Current commands/results/inventory/limits; earlier evidence retained as history |
+
+### Verification command results
+
+Existing documentation validator and unittest commands have executed with exit 0; validator reports documentation manifest/reference/draft OpenAPI PASS, and unittest reports Ran 3 tests / OK. Final traceability/model/stage/scope results are recorded below after actual execution.
+
+Executed from repository root:
+
+```bash
+python3 -B scripts/validate_pack.py
+python3 -B -m unittest discover -s scripts -p 'test_*.py'
+python3 -B /tmp/rdrvms-03a3-audit.py
+git diff --check
+git diff --exit-code -- apps/api apps/web infra docs .specify scripts tests .github AGENTS.md
+git status --short
+```
+
+All validation/audit/diff commands exited **0**. The existing validator passed and **3 documentation unit tests passed**. The temporary read-only structural audit passed: 60 local/canonical requirement rows and 78 known test IDs with canonical priorities/statuses preserved; all 18 approval rows unchanged and 18 new evidence verifications PENDING; all original 40 scenario rows unchanged; 23 catalogue/ER blocks and 44 valid ER relationships; exact stage membership 3/4/5 with 16 FKs distributed 2/6/8 and no later-stage parent; documented scalar names/nullability and proposed identifier lengths checked; local links, Markdown table widths and whitespace valid. Scope is exactly 12 modified and 2 new feature-005 files, no staged/deleted/out-of-scope files, required branch/HEAD unchanged. Explicit excluded-path diff is clean. These checks are structural, not SQL/Prisma compilation, security correctness or applied migration proof. Temporary audit script is outside the repository; no installed dependency or committed executable test added.
+
+GitHub read-only commands and exact outcomes are in approval-verification.md. Sandboxed initial PR list failed with connection error (exit 1); authorized network list/view/review reads succeeded (exit 0). One auxiliary inline-comment read was not executed because automatic permission approval review timed out; its permitted retry succeeded (exit 0, empty list). No unresolved approval-tool blockage remains; decision approval evidence is still insufficient. No GitHub write or user contact was performed. Primary Prisma v7/PostgreSQL 17 mapping/constraint/privilege references were checked and cited in the staged proposal; documentation is not pinned-version compatibility evidence.
+
+### Unexecuted work, security/privacy and final gate
+
+No executable Prisma schema edits, generation/validation/migration commands, migration files, SQL, database connections/tables/data, seeds, backend/frontend runtime edits/tests/build/typecheck, dependency changes, infrastructure changes, browser/session/CSRF/security scan, PostgreSQL races/catalog/privilege tests, backup/restore, benchmark or Mermaid renderer executed. No .env or secret values were read/printed. No canonical source, API, role/session/constitutional policy or live permission changed. All table/attribute/native-object/privilege details remain proposed, no accepted decision/approval invented and no CI result claimed.
+
+Security/privacy impact now: documentation only, synthetic data boundary retained. Candidate global capability requires supervisor/independent security sign-off and offline-only privilege review; owner/org context, session/verification/CSRF, mandatory audit, revocation races and recovery remain unsigned. Migration/deployment impact now: none. The proposed three schema stages require exact source/policy approval, safe isolated target, reviewed SQL/native objects/role grants/lock budgets/recovery, real failing-then-passing behavioral evidence and separate implementation/migration permission before action.
+
+Final verdict: **NEEDS APPROVAL**. Specific blockers: required reviewer role mapping and decision-specific option/scope/date/evidence; C-11 constitutional/source reconciliation; FR-027 actor/grant/recovery authority; signed security parameters/library/verification/CSRF choices; audit/stream/data/native constraint review; exact future SQL/target/rehearsal/recovery/endpoint gates. Stop after evidence verification and the detailed proposed migration plan. Database implementation remains BLOCKED.

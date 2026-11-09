@@ -34,3 +34,9 @@ Session/verification details are centralized in [security-parameters.md](securit
 D-S01/02/03/04/05/12/13/15/18 have recommended reconciliations. D-S06/07/08/09/10/11/14/16/17 remain OPEN or conditionally PROPOSED; selection of the architecture does not select dependent workflow, location, taxonomy, retention or API decisions. Every row lacks final sign-off. D-001–D-012 remain OPEN in their original register.
 
 No runtime/schema/migration/dependency/infrastructure or authoritative source changes, database operations, environment-value access, commits, pushes or deployment are authorized. Human review must reconcile the authority conflict, approve the chosen slice's exact policy and update sources before a separate implementation request and tests-first work.
+
+## 03A.3 current approval-readiness outcome
+
+**NEEDS APPROVAL**. [approval-verification.md](approval-verification.md) verifies generic GitHub PR #5 approval for the current commit, not acceptance of D-S options, supervisor/security roles or constitutional/source amendments. Accepted decisions/domain attributes: none verified. All decision verifications PENDING and implementation/migration authorization NOT AUTHORIZED. Original source conflicts remain unresolved.
+
+[identity-migration-stages.md](identity-migration-stages.md) provides the detailed proposed 3/4/5 schema stages for the existing 12 entities, with exact model/scalar/constraint/index/FK/cross-stage catalog/test/recovery gates. Full 23-entity design and six deferred P1 entities unchanged. Earlier ready-for-sign-off label describes the prior delivery only; current approval readiness requires actual scoped evidence. No policy or migration is installed.

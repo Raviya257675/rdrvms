@@ -59,3 +59,9 @@ There is no approved org selection/routing rule for a public reporter, district-
 Threat IDs differ between the short `docs/security/threat-model.md` and Word-derived document 07. Refer to path plus threat description, not a bare T-number that could identify a different threat. This package assesses design implications; it is not a completed security assessment.
 
 The full C-01 through C-11 correction/disposition matrix is in [source-amendments.md](source-amendments.md). FR-027 conflicts with UC-08 and broad Administrator matrix cells: org/district membership cannot authorize suspension of a cross-org identity. E23 is a proposed restricted actor capability, not a resolved source conflict. All requirement and decision identifiers remain stable.
+
+## 03A.3 approval/source application audit
+
+Current check baseline: clean HEAD `5634e91512aec169d73a1398eedac68f6350562c`, required branch unchanged. [approval-verification.md](approval-verification.md) records the discovered PR #5/review URL, exact review text, timestamp, account metadata and reviewed head. Generic APPROVED review text “Good” identifies no D-S option/required-role/source-amendment scope. No accepted decision or approved domain attribute was verified. All C-01–C-11 remain unresolved in authoritative sources, including the actual HLD cross-reference discrepancy; no permission or constitutional exception is inferred.
+
+[identity-migration-stages.md](identity-migration-stages.md) retains the exact 12 entities in FK-valid 3/4/5 stages, with 16 proposed FKs and the original 23-entity model unchanged. Stage fields/constraints/privileges, numeric parameters and endpoint contracts remain proposed. All canonical requirement/test/decision IDs and statuses are preserved; local stage traceability is design responsibility, not implementation proof. Verdict: NEEDS APPROVAL.
