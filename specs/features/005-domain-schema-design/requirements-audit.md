@@ -1,6 +1,6 @@
 # Requirements and source audit
 
-Status: PROPOSED. Local baseline: `8cc60e99d473bb2d15c534481077a60e293f5bec`, branch `feature/domain-schema-design`, initially clean. This document records evidence and questions; it does not amend source authority.
+Status: PROPOSED. Reconciled under Master Prompt 03A.2 from clean branch `feature/domain-schema-design`, HEAD `7498ced7d5e3db1baf6a9be7e8f946083acf2e6e`. Historical local baseline: `8cc60e99d473bb2d15c534481077a60e293f5bec`, branch `feature/domain-schema-design`, initially clean. This document records evidence and questions; it does not amend source authority.
 
 ## Sources cross-referenced
 
@@ -40,7 +40,7 @@ The numbered Word-derived files in this table are all inside `docs/reference/mar
 | C-08 | LLD says all resources have id/createdAt/updatedAt; data inventory uses user_id as profile PK and append-only audit events | Natural-key internal bridges/stream/profile and immutable audit timestamps are explicit exceptions; public resources keep UUID IDs | Backend/API review; no duplicate synthetic IDs for internal joins merely to imitate DTOs |
 | C-09 | Roadmap labels US-017 including suspension P1; SRS FR-027 is P0 | Preserve SRS P0 suspension/revocation in proposed MVP | Product confirms priority; no silent deferral |
 | C-10 | OpenAPI uses JSON numeric quantity; native Decimal serializes differently and some workflow endpoints omit schemas/reasons/version bounds | Keep database exact decimal; define bounded numeric API conversion after contract review, or propose a versioned decimal-string contract | No existing API edited; see type mapping and D-S16 |
-| C-11 | AGENTS requires organization evaluation for every protected resource; SRS/API also describe global own-account sessions/profiles and personal notifications without an org context | Propose explicit owner-bound identity context and current org checks whenever an org-scoped target exists; NULL org is never a wildcard | Human/security review must approve this interpretation or require org-bound personal resources. The exception is not authorized by this proposal; affected identity handlers remain blocked until reconciled |
+| C-11 | AGENTS requires organization evaluation for every protected resource; SRS/API also describe global own-account sessions/profiles and personal notifications without an org context | Propose explicit owner-bound identity context and current org checks whenever an org-scoped target exists; NULL org is never a wildcard | Human/security review must approve this interpretation or require org-bound personal resources. Owner selected the two-context candidate in 03A.2; global account-security E23 is a separate explicitly reviewed exception. Exact AGENTS/constitution/SRS amendments are in source-amendments.md. Neither exception is authorized by this proposal; affected handlers remain blocked until sign-off and source synchronization |
 
 No conflict is declared resolved. “Propose” identifies the model being evaluated, not a replacement for human review.
 
@@ -57,3 +57,5 @@ Database-related NFRs cover performance/latency and query bounds (001/002/025), 
 There is no approved org selection/routing rule for a public reporter, district-admin hierarchy, skill taxonomy, fractional unit list, request fulfillment computation, assignment timeout, session duration, legal retention schedule or exact public coordinate granularity. Each is a pending decision. No survivor table, beneficiary household identifier, medical details, government feed, automatic risk scoring, SMS/email service or monetary donation record is implied.
 
 Threat IDs differ between the short `docs/security/threat-model.md` and Word-derived document 07. Refer to path plus threat description, not a bare T-number that could identify a different threat. This package assesses design implications; it is not a completed security assessment.
+
+The full C-01 through C-11 correction/disposition matrix is in [source-amendments.md](source-amendments.md). FR-027 conflicts with UC-08 and broad Administrator matrix cells: org/district membership cannot authorize suspension of a cross-org identity. E23 is a proposed restricted actor capability, not a resolved source conflict. All requirement and decision identifiers remain stable.

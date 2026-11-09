@@ -30,3 +30,9 @@ This milestone changes documentation only. No runtime behavior is implemented, s
 ## Human gates
 
 Resolve and sign the decisions applicable to the first feature slice, approve data collection and migration target, then explicitly authorize that implementation separately. Auth, RBAC, public location policy, session secrets/lifetimes, database role grants and retention are approval boundaries. No approval is inferred from a clean documentation check.
+
+## 03A.2 reconciliation sequence and scope
+
+Owner preference authorizes this design reconciliation only. Starting branch is correct and clean at 7498ced7d5e3db1baf6a9be7e8f946083acf2e6e. Update the existing 14 package files and add six review artifacts: reconciliation-summary.md, security-parameters.md, source-amendments.md, approval-record.md, review-handoff.md, identity-scope-readiness.md. Preserve all original requirement/test/decision IDs and historical evidence.
+
+Reconcile owner/org authorization and separately gated global account-security actor; propagate E23 into catalogue/ER/constraints/transactions/traceability; propose exact source corrections without applying them; record 18 unsigned decisions and the future 12-entity identity slice; run docs validator/unit tests and a read-only structural/scope audit. No runtime behavior changes, so no artificial RED/GREEN claim; future behavioral tests remain planned. No dependency, permission, environment, migration or database changes. Primary failure modes: unsigned security parameter treated as accepted, org admin treated as global actor, owner exception applied to organizational targets, runtime audit role inheriting owner, and unsafe session revival/revocation races. Supervisor/security/source approval and separate implementation instruction remain blockers.

@@ -1,7 +1,7 @@
 # Feature 005: Full relational domain schema proposal
 
-- Status: **PROPOSED — READY FOR HUMAN DESIGN REVIEW; NOT APPROVED FOR IMPLEMENTATION**.
-- Authorized activity: Master Prompt 03, design only, 2026-11-09.
+- Status: **PROPOSED — READY FOR HUMAN SIGN-OFF; NOT APPROVED FOR IMPLEMENTATION**.
+- Authorized activity: Master Prompts 03 and 03A.2, design only, 2026-11-09. Backend/product owner selected the flexible scoped architecture as the preferred candidate; required security, supervisor, constitutional and migration approvals remain pending.
 - Owner: backend owner; reviewers: product owner, teammate/frontend owner, security/privacy reviewer, QA and supervisor.
 - Requirements: FR-001 through FR-035 and NFR-001 through NFR-025 are individually assessed in [traceability.csv](traceability.csv); no requirement status is advanced.
 - Existing acceptance IDs: AT-001 through AT-035, NF-001 through NF-025, SEC-001 through SEC-003 and relevant OPS/PERF cases. Proposed schema scenarios are in [test-cases.md](test-cases.md).
@@ -14,12 +14,13 @@ There is no formally approved full MVP schema in the repository. Features 001–
 
 ## Proposed scope
 
-The proposed MVP contains **22 relational entities**, including normalized bridges and persistence support:
+The proposed MVP contains **23 relational entities**, including normalized bridges and persistence support:
 
 | Domain | Proposed tables | Justification |
 |---|---|---|
 | Geography and reference data | `districts`, `skills`, `units` | District scope, skill eligibility, quantity/unit validation; no province/village hierarchy or PostGIS requirement |
 | Identity | `users`, `account_roles`, `email_verification_tokens`, `sessions` | Registration consent, verified access, multiple personal roles, persistent revocable sessions |
+| Account security | `account_security_grants` | Explicit separately reviewed global account suspension/personal privilege removal under FR-027; no operational authority |
 | Organization scope | `organizations`, `organization_districts`, `memberships`, `membership_districts` | Many organizations per user; scoped coordinator/admin/volunteer grants |
 | Volunteer | `volunteer_profiles`, `volunteer_skills` | Coarse home district, availability, capacity, eligible skills |
 | Incidents and relief needs | `incidents`, `relief_requests`, `request_skills` | Verification, quantities, priority, permitted state transitions and required skills |
@@ -29,7 +30,7 @@ The proposed MVP contains **22 relational entities**, including normalized bridg
 
 `skills`, `units`, `request_skills`, `notification_streams` and `idempotency_records` are requirement-derived implementation proposals, not new product requirements. Their alternatives and costs are explicit in [decisions-and-risks.md](decisions-and-risks.md). No generic permission engine, dispatch, household/person registry, payment, logistics fleet, warehouse hierarchy or third-party integration is proposed.
 
-P1 designs are documented but excluded from the 22-table MVP: `inventory_items`, `allocations`, `restricted_incident_locations`, `evidence_files`, `password_reset_tokens`, `privacy_requests`. Allocation status models dispatch/consumption without inventing a separate distribution/beneficiary domain. Exports (P2) derive from existing safe views; no export-history or analytics warehouse is required. See [entity-catalogue.md](entity-catalogue.md).
+P1 designs are documented but excluded from the 23-table MVP: `inventory_items`, `allocations`, `restricted_incident_locations`, `evidence_files`, `password_reset_tokens`, `privacy_requests`. Allocation status models dispatch/consumption without inventing a separate distribution/beneficiary domain. Exports (P2) derive from existing safe views; no export-history or analytics warehouse is required. See [entity-catalogue.md](entity-catalogue.md).
 
 ## Design acceptance scenarios
 
@@ -43,9 +44,9 @@ P1 designs are documented but excluded from the 22-table MVP: `inventory_items`,
 
 ## Data and quality rules
 
-PostgreSQL remains authoritative. Mutations commit domain state, audit and required inbox/outbox effects atomically. The service evaluates active session, account status, role, organization, district and object ownership on every protected read/write and socket authorization. Versions and idempotency prevent stale/repeated side effects; neither replaces authorization.
+PostgreSQL remains authoritative. Mutations commit domain state, audit and required inbox/outbox effects atomically. The candidate service selects an explicit authorization context: owner-bound personal resources or organization-bound operational resources. Personal resources require current session/account status, personal role where relevant and ownership; organizational resources additionally require active organization/membership/role/district/object checks. FR-027 global account-security commands require a separate explicit account_security_grants capability, not either context as a wildcard. These interpretations remain blocked until C-11 and D-S03 source amendments are signed. Versions and idempotency prevent stale/repeated side effects; neither replaces authorization.
 
-Use fictional demonstration data only. No public release, real victims' data, official dispatch or real volunteer contact is authorized. Numeric retention periods, collection of restricted points, session lifetimes, admin reach and role grants remain human decisions. Database checks do not prove API authorization or privacy compliance.
+Use fictional demonstration data only. No public release, real victims' data, official dispatch or real volunteer contact is authorized. Numeric retention periods, collection of restricted points, session parameters, admin reach and role grants remain human decisions. Proposed session values and Argon2id parameters are listed in [security-parameters.md](security-parameters.md) for explicit review only. Database checks do not prove API authorization or privacy compliance.
 
 The proposal addresses NFR performance/resource bounds through indexes, keyset pagination and short transactions; no benchmark, migration, restore, concurrency test or security certification is claimed by a design document.
 
@@ -57,3 +58,5 @@ The proposal addresses NFR performance/resource bounds through indexes, keyset p
 - [Plan](plan.md), [tasks](tasks.md), [test cases](test-cases.md), [evidence](evidence.md), [human approval checklist](approval-checklist.md).
 
 Human approval of this design does not itself authorize executing migrations. A subsequent explicit implementation instruction, approved feature slice, tests-first evidence and reviewed migration plan are required. Stop after this proposal.
+
+Current reconciliation entry point: [reconciliation-summary.md](reconciliation-summary.md); [source amendments](source-amendments.md), [18-row approval record](approval-record.md), [review handoff](review-handoff.md) and [smallest identity/scope slice](identity-scope-readiness.md). Verdict: **READY FOR HUMAN SIGN-OFF**, not accepted or implementation-ready.

@@ -1,6 +1,6 @@
 # Tasks and review status
 
-Design authorization: Master Prompt 03. All implementation tasks below are gated and remain unstarted.
+Design authorization: Master Prompts 03 and 03A.2 (preferred candidate reconciliation only). All implementation tasks below are gated and remain unstarted.
 
 ## Design deliverables
 
@@ -33,3 +33,15 @@ Design authorization: Master Prompt 03. All implementation tasks below are gated
 - [ ] Obtain human code/migration review. No automatic merge or deployment.
 
 No migrations, schema generation, seeds, domain tests, authentication or APIs have been executed/implemented as part of feature 005.
+
+## 03A.2 design reconciliation
+
+- [x] Verify required branch/clean HEAD; preserve unmodified authoritative sources and executable schema.
+- [x] Record owner-selected preference without inventing approvals, names, dates or review links.
+- [x] Reconcile C-11 as proposed owner/org contexts plus separately gated global FR-027 authority.
+- [x] Propagate E23, audit context and unsigned security parameters through the draft catalogue/ER/constraints/transactions/traceability.
+- [x] Prepare all 18 linked decision/status rows and C-01–C-11 authoritative source amendment proposal.
+- [x] Prepare supervisor/security/backend/product/API handoff and exact proposed 12-entity identity/scope slice.
+- [x] Extend planned negative/session/concurrency/bootstrap cases to SC-40 without removing earlier assertions.
+- [x] Record current docs validator/unit-test/structural/scope audit results in evidence.md after actual execution.
+- [ ] Obtain applicable signed source/policy/constitutional/security decisions; separately authorize implementation and migrations later.

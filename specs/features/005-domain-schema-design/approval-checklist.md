@@ -1,6 +1,8 @@
 # Human design approval checklist
 
-Status: **PENDING — no signatures, approvals or dates supplied**. The deliverable verdict READY FOR HUMAN DESIGN REVIEW means reviewable proposal only. Even a completed design checklist does not authorize executing a migration without a later explicit implementation request.
+Status: **PENDING — no signatures, approvals or dates supplied**. The current deliverable verdict READY FOR HUMAN SIGN-OFF means reviewable proposal only. Owner preference is recorded in approval-record.md; all independent approvals remain pending. Even a completed design checklist does not authorize executing a migration without a later explicit implementation request.
+
+Current complete record: [approval-record.md](approval-record.md), including original decision links, exact approval scope, deviations, reviewer/name/date/evidence/status and separate implementation/migration authorization. The checklist below is a reviewer index; do not complete it independently of that record.
 
 ## Decision sign-off record
 
@@ -29,11 +31,12 @@ Record accepted option, deviations, reviewer name, date and review link for each
 
 ## Acceptance of the design package
 
-- [ ] Confirm all 22 proposed MVP entities are required for the selected scope, or record removals/alternative design.
+- [ ] Confirm all 23 proposed MVP entities are required for the selected scope, or record removals/alternative design.
 - [ ] Confirm the six P1 entities remain deferred unless separately approved; no beneficiary/household, dispatch, payment or external-integration scope is inferred.
 - [ ] Review ER cardinalities and the full attribute/nullability/FK/check catalogue, including internal natural-key exceptions C-08.
-- [ ] Review all 60 FR/NFR trace rows, BR-01 through BR-10 mapping and 34 PLANNED schema scenarios.
+- [ ] Review all 60 FR/NFR trace rows, BR-01 through BR-10 mapping and 40 PLANNED schema scenarios.
 - [ ] Reconcile C-01 through C-11 in the authoritative sources before implementing affected behavior; specifically coordinator/admin authority, reporter drafts, verified/active parent guards, completion/progress routes and owner-bound identity versus mandatory organization scope.
+- [ ] Review E23 global FR-027 capability separately with supervisor and independent security; no org Administrator inheritance or self-grant.
 - [ ] Approve org/district/object ownership and public-field allowlists without granting implicit global-admin privileges.
 - [ ] Approve session/verification/consent policy; no real data or external mail delivery is implicitly authorized.
 - [ ] Approve global capacity locking, pair uniqueness, replay, stream ordering and failed-worker recovery semantics; require real PostgreSQL RED/GREEN proof later.

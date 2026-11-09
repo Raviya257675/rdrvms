@@ -13,7 +13,7 @@ Before any implementation, obtain explicit authorization for one approved featur
 | Proposed stage | Logical dependencies and additive objects | Gate / evidence needed later |
 |---|---|---|
 | M0 design freeze | Approve applicable D/C decisions, exact names/types/checks/API serialization, session/hash approach, policy/fixture scope | Signed checklist, updated affected feature spec and shared ADR/data/API docs |
-| M1 identity/scope foundation slice | districts, organizations, users, account_roles, organization_districts, memberships, membership_districts; streams, audit, verification tokens and sessions as needed by approved auth behavior | Auth/role/consent/verification negative RED tests first; bootstrap authority reviewed; no global self-grant |
+| M1 identity/scope foundation slice | districts, organizations, users, account_roles, organization_districts, memberships, membership_districts; separately gated account_security_grants; streams, audit, verification tokens and sessions as needed by approved auth behavior | Auth/role/consent/verification negative RED tests first; bootstrap authority reviewed; no global self-grant |
 | M2 volunteer profile slice | skills, volunteer_profiles, volunteer_skills | FR-005 policy tests; capacity field not an approved dispatch limit until D-S09 accepted |
 | M3 incident slice | incidents with scoped FKs, review metadata, version checks and required notification/outbox persistence | FR-007–010/013 audit/redaction/RBAC tests; org routing and location grid approved |
 | M4 relief request slice | units, relief_requests, request_skills | FR-011/012/014 parent guards, unit/capacity meanings and actor policy approved |
@@ -57,3 +57,5 @@ Seed only the slice's dependencies, idempotently by stable fictional keys. Rerun
 ## Planned migration evidence and safeguards
 
 Future checks must exercise blank disposable creation, upgrade from known prior schema, SQL catalog constraints/indexes, invalid direct SQL inserts, transaction rollback at audit/inbox/outbox steps, duplicate/capacity/stock races, compatibility smoke, seed repeatability, crash/restart retention, backup/restore and absence of secrets/PII. Merely running Prisma validate/generate is not proof of applied PostgreSQL integrity. Those tests are **not run** in this design milestone; [test-cases.md](test-cases.md) lists their intended acceptance.
+
+For the exact smallest proposed M1 object set, field approval state, ordering, bootstrap and blocker list, use [identity-scope-readiness.md](identity-scope-readiness.md). This supersedes any inference that the full 23-entity catalogue is a single migration.

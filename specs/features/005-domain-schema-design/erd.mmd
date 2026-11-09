@@ -130,6 +130,7 @@ erDiagram
     uuid id PK
     uuid actor_id FK
     uuid organization_id FK
+    varchar authorization_context
     varchar target_type
     uuid target_id
     uuid request_id
@@ -142,6 +143,19 @@ erDiagram
     uuid result_id
   }
 
+  ACCOUNT_SECURITY_GRANTS {
+    uuid id PK
+    uuid user_id FK
+    varchar capability
+    varchar status
+    uuid granted_by FK
+    uuid revoked_by FK
+    varchar review_reference
+  }
+
+  USERS ||--o{ ACCOUNT_SECURITY_GRANTS : receives_explicit_global_security_capability
+  USERS ||--o{ ACCOUNT_SECURITY_GRANTS : issues_only_by_reviewed_offline_procedure
+  USERS |o--o{ ACCOUNT_SECURITY_GRANTS : optionally_revokes
   USERS ||--o{ ACCOUNT_ROLES : has_personal_capability
   USERS ||--o{ MEMBERSHIPS : receives_scoped_role
   USERS ||--o{ MEMBERSHIPS : grants_role

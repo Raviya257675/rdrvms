@@ -1,6 +1,6 @@
 # Relational integrity, types and query design
 
-Status: PROPOSED; no DDL, Prisma change, query execution or migration is authorized. [entity-catalogue.md](entity-catalogue.md) defines every proposed field and nullability. [transactions.md](transactions.md) defines cross-row invariants. The ER diagram shows 22 MVP tables, excludes six P1 tables and intentionally omits logical polymorphic subject/target/result arrows.
+Status: PROPOSED; no DDL, Prisma change, query execution or migration is authorized. [entity-catalogue.md](entity-catalogue.md) defines every proposed field and nullability. [transactions.md](transactions.md) defines cross-row invariants. The ER diagram shows 23 MVP tables, excludes six P1 tables and intentionally omits logical polymorphic subject/target/result arrows.
 
 ## Normalization and relationship review
 
@@ -55,6 +55,7 @@ Decimal API decision C-10/D-S16: OpenAPI currently says quantity is JSON number.
 | K13 | Idempotency UNIQUE(actor_id,organization_id,operation,key), digest length and success code bounds | NFR-022, no cross-actor/org replay collisions |
 | K14 | Audit actor-kind consistency; mandatory request/target/action/time; object/size-limited metadata | FR-025/035, NFR-010/017; runtime INSERT-only privilege proposal |
 | K15 | P1 item UNIQUE(org,sku), UNIQUE(id,org); allocations FK(item,org) and FK(request,org) | FR-021/022, no cross-org stock linking |
+| K16 | account_security_grants UQ(user_id,capability), capability constant, status/revoker/time checks, actor/subject FKs; audit authorization_context/org consistency | FR-004/025/027/035; global exception is explicit and separately approved; services still validate grant authority |
 
 Composite referenced columns have explicit non-partial unique keys. Never use the active-pair partial unique index as an FK target. All child FK columns receive a covering leading-column index or a documented small reference/bridge exception; a foreign key is not itself a child lookup index.
 
@@ -72,7 +73,7 @@ No constraint like `CHECK(count(active_assignments)<=capacity)` or `CHECK(parent
 
 | Aggregate | Proposed transitions | Row-local constraints | Required service policy |
 |---|---|---|---|
-| User | UNVERIFIED→ACTIVE, ACTIVE↔SUSPENDED, approved retirement terminal | ACTIVE has email_verified_at; retirement marker matches state | Verify token; scoped admin; suspension revokes sessions; no unapproved reactivation/role grants |
+| User | UNVERIFIED→ACTIVE, ACTIVE→SUSPENDED; restoration/retirement policy pending | ACTIVE has email_verified_at; retirement marker matches state | Verify token; separate E23 account-security capability for suspension; revoke sessions; organization admin alone denied; no unapproved reactivation/role grants |
 | Incident | UNVERIFIED→VERIFIED/REJECTED; VERIFIED→ACTIVE→RESOLVED | UNVERIFIED all review fields null; other states all review fields set; REJECTED decision=REJECTED, VERIFIED/ACTIVE/RESOLVED decision=VERIFIED | Scoped reviewer, reason>=5, version; block resolve with open needs/active commitments unless separately approved compensation |
 | Request | DRAFT→APPROVED→IN_PROGRESS→FULFILLED; allowed nonterminal→CANCELLED | approval actor/time paired; required for approved/progress/fulfilled; close actor/time/reason required for terminal | Lock verified/active parent; positive quantity with valid unit; explicit coordinator closure; cancel pending assignments atomically; block cancellation while accepted/in-progress work needs human handover |
 | Assignment | PENDING→ACCEPTED/DECLINED/CANCELLED; ACCEPTED→IN_PROGRESS→COMPLETED | accepted/declined/progress/completed require responded_at; progress/completed require started_at; terminal requires ended_at; DECLINED/CANCELLED nonblank reason; timestamp order assigned<=responded<=started<=ended for present fields | Only target can accept/decline; coordinator may cancel PENDING; role/session/version and parent guards; no implied direct ACCEPTED→COMPLETED or active cancellation without approved API/state change |
@@ -88,6 +89,7 @@ All indexes are proposals, not performance proof. PK/UQ indexes already serve th
 |---|---|
 | users/login | email UQ only; status-only index deferred |
 | account_roles | PK(user,role); no extra |
+| account_security_grants | UQ(user,capability); granted_by/revoked_by FK indexes; no NULL-org key or blanket global-role index |
 | districts/skills/units/organizations | code UQ; no unbounded text search/GIN by default |
 | organization_districts/intake candidates | (district_id,organization_id) |
 | memberships/org staff | (organization_id,role,status,user_id); unique user/org/role handles own scopes |
@@ -116,3 +118,9 @@ Default resource-list order is immutable `(created_at DESC,id DESC)` with keyset
 ## Referential deletion and archival
 
 Use RESTRICT throughout the proposed MVP, including users referenced by actor/reviewer/grant history and orgs referenced by domain rows. Runtime identity revocation is a status/session action, not DELETE. An approved rights/anonymization workflow may later change selected identifying attributes while preserving opaque IDs and audit integrity; do not cascade into assignments, notices, audit or replay records. Delete/retention jobs require reviewed ordering and cannot invalidate unread notification recovery or idempotency promises. No retention interval, RLS/grant installation or SQL deletion is authorized here.
+
+## Authorization boundary reconciliation (C-11; proposed)
+
+Owner context uses users/account_roles/session ownership for /auth/me, own sessions and own profile. Personal inbox owner access is further restricted by the organization subject when present; scope loss yields a neutral tombstone. An organization resource always requires explicit nonnull organization context and district/role/object policy, including own reports or assignments; ownership alone is insufficient. Caller-supplied organization selection is validated, never trusted.
+
+Global FR-027 commands take a third explicitly named exception path with E23 capability, reason, confirmation, target-version and mandatory ACCOUNT_SECURITY audit. Org administrators cannot mutate global users.status; global security holders cannot verify incidents or assign work without the respective scoped coordinator membership. Audit null org and notification null org never mean all organizations. The exact policy and constitutional amendments in source-amendments.md remain unsigned and block implementation.
