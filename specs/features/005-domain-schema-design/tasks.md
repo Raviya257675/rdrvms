@@ -55,3 +55,13 @@ No migrations, schema generation, seeds, domain tests, authentication or APIs ha
 - [x] Carry pre-sign-off consistency gaps into proposed test/privilege/migration gates without altering old scenario assertions or canonical statuses.
 - [x] Record documentation validation/unit/traceability/model/stage/scope checks after actual execution.
 - [ ] Required humans provide option-specific reviewer-role evidence; then separately authorize source amendments, implementation and actual migrations. None supplied by generic PR approval or this task.
+
+## 03A.4 latest identity approvals and executable-schema handoff
+
+- [x] Verify current docs/identity-architecture-signoff branch and clean baseline without branch/credential changes.
+- [x] Read latest matching PR #6 review/body/head/role metadata, conversation and inline evidence; no decision-specific approval verified.
+- [x] Report actual reviewer/date/evidence and unknown role/no accepted option/scope for D-S01/02/03/04/05/11/12/13/15/18 and C-11/FR-027; preserve blank approval fields and other open decisions.
+- [x] Apply zero authoritative corrections because no required scoped approval is verified.
+- [x] Prepare identity-implementation-handoff.md: approved inventory empty, exact prospective first schema stage, 3/4/5 dependencies, native SQL/permissions/fixtures/RED/GREEN/catalog/recovery and distinct authorization checklist.
+- [x] Record current documentation validator/unit/traceability/dependency/scope check results after actual execution.
+- [ ] Obtain required scoped human design/amendment evidence and separate implementation/test-target/SQL authorizations before later executable work. None inferred from this prompt or generic approval.

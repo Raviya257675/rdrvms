@@ -223,3 +223,62 @@ No executable Prisma schema edits, generation/validation/migration commands, mig
 Security/privacy impact now: documentation only, synthetic data boundary retained. Candidate global capability requires supervisor/independent security sign-off and offline-only privilege review; owner/org context, session/verification/CSRF, mandatory audit, revocation races and recovery remain unsigned. Migration/deployment impact now: none. The proposed three schema stages require exact source/policy approval, safe isolated target, reviewed SQL/native objects/role grants/lock budgets/recovery, real failing-then-passing behavioral evidence and separate implementation/migration permission before action.
 
 Final verdict: **NEEDS APPROVAL**. Specific blockers: required reviewer role mapping and decision-specific option/scope/date/evidence; C-11 constitutional/source reconciliation; FR-027 actor/grant/recovery authority; signed security parameters/library/verification/CSRF choices; audit/stream/data/native constraint review; exact future SQL/target/rehearsal/recovery/endpoint gates. Stop after evidence verification and the detailed proposed migration plan. Database implementation remains BLOCKED.
+
+## Current Master Prompt 03A.4 — verified identity handoff
+
+Current verdict: **NEEDS ADDITIONAL APPROVAL**. Work began clean on the user's current docs/identity-architecture-signoff branch, HEAD `73dc6a203ed2ba78f975dec57beb71c0c6f2ef2f`; no branch change or commit. Earlier sections describe prior tasks/branches and do not establish current approvals.
+
+### Actual latest review evidence and accepted scope
+
+Current-branch GitHub lookup found PR #6, MERGED, aggregate APPROVED, head matching this local HEAD. Review 5829731967 by login tharushikadilrukshi111-hash (User account, COLLABORATOR) was submitted 2026-11-09T17:15:46Z for this commit; full review body “Thats okay.”. PR body is an unfilled template; conversation and inline comments empty. Actual review URL and per-decision reviewer/unknown role/no accepted option/date/evidence/scope table are in approval-verification.md, section 03A.4. No supervisor/security/project-role mapping, specific option/parameter/field/amendment acceptance or SQL permission is evidenced. Merge metadata is not a decision approval.
+
+D-S01/02/03/04/05/11/12/13/15/18 and C-11/FR-027 remain PENDING for sign-off. All original 18 candidate rows, blank approval fields and NOT AUTHORIZED implementation/migration fields are preserved. Original D-001–D-012 and C-01–C-11 remain open/unresolved. No authoritative AGENTS/constitution/SRS/RBAC/architecture/ADR/security/OpenAPI/traceability/test change applied. No approved model/field/relationship/constraint/privilege inventory is verified; no signature/approval invented.
+
+Read-only commands: gh pr list for docs/identity-architecture-signoff, gh pr view 6 for body/head/reviews/discussion, paginated GET pulls/6/reviews and GET pulls/6/comments with selected fields. Initial PR lookup was not executed because automatic permission review timed out; its one permitted retry completed exit 0. View completed exit 0; both API reads yielded process sessions, then completed exit 0. No unresolved tool-access blocker remains; evidence is insufficient on scope/role. No GitHub write/review request/contact, branch fetch/switch, merge or credential inspection occurred.
+
+### Implementation handoff and impact
+
+identity-implementation-handoff.md provides verified approved inventory (empty), all 12 candidate model mappings, exact prospective Stage 1 column/key/FK/index boundary and 3/4/5 FK dependency confirmation. It identifies all remaining decisions/native object/privilege constraints, fictional fixtures, future RED/GREEN negative/race tests, exact catalog/role assertions, migration rehearsal/recovery and six distinct design/source/repository/test-target/SQL/enabling gates. The full prior scalar/type/check/index proposal is linked and unchanged. Stage 1's three empty reference/scope tables are a proposed future unit, not permission to enable endpoints or bootstrap before audit/stream support. Current authorized schema/SQL scope is none.
+
+Requirements traced: FR-001/002/004/025/027/033/035, FR-006 scope-data support, NFR-005/007/008/010/015/017/018/019/024/025; early stream dependency FR-019/NFR-005/022. Full local 60-row FR/NFR mapping, 23-entity/44-relationship ER model, 12-entity foundation and all 40 planned scenarios retained. No new entity, field, role, numeric parameter, constraint or dependency is accepted by this handoff.
+
+Security/privacy impact now: documentation only, fictional data boundary unchanged; C-11 owner/org exception, global FR-027 actor, library/security values, audit/E23 effective privileges/recovery remain unsigned. Migration/deployment impact now: none. No environment values, real records, SQL, database connection, Prisma schema edit/generation/validation, migration files/application, runtime/frontend implementation/tests/build/typecheck, scan, backup/restore, browser/security/concurrency/catalog query, dependency/infrastructure change or deployment performed. Actual database contents/privileges and pinned-version schema compilation remain unverified.
+
+### Changed-file inventory — 03A.4
+
+All files are within specs/features/005-domain-schema-design/; ten existing files updated and one new file:
+
+| File | Current change |
+|---|---|
+| identity-implementation-handoff.md (new) | Approved-versus-proposed inventory, prospective first schema unit, FK confirmation, blockers, native SQL/privilege/fixture/TDD/catalog/recovery and distinct authorization checklist |
+| approval-verification.md | Latest PR #6/review observation and twelve current decision/authority evidence rows |
+| approval-record.md | Current evidence disposition/link; original approval rows/blank fields unchanged |
+| identity-migration-stages.md | Current handoff link; complete existing model/field/native object proposal preserved |
+| requirements-audit.md | Current branch/head and C-11/FR-027/source/approval disposition |
+| reconciliation-summary.md | Current verdict/evidence/handoff entry point; previous history retained |
+| spec.md | Current unapproved handoff scope/status link |
+| plan.md | Evidence-first current-branch task scope, files, constraints and checks |
+| tasks.md | Actual documentation work and remaining human authorization gates |
+| review-handoff.md | Latest review-role/scope gap and new handoff reference |
+| evidence.md | Actual current evidence, checks, inventory and limits |
+
+### Verification commands and results
+
+Existing documentation validator and unittest already executed with exit 0: documentation manifest/reference/draft OpenAPI PASS and Ran 3 tests / OK. Read-only traceability/model/dependency/scope audit results are recorded below after actual execution. No future domain test result, migration proof or CI evidence is inferred from these documentation checks.
+
+Executed from repository root:
+
+```bash
+python3 -B scripts/validate_pack.py
+python3 -B -m unittest discover -s scripts -p 'test_*.py'
+python3 -B /tmp/rdrvms-03a4-audit.py
+git diff --check
+git diff --exit-code -- apps/api apps/web infra docs .specify scripts tests .github AGENTS.md
+git status --short
+```
+
+All commands exited **0**. Documentation validator PASS; **3 documentation unit tests passed**. Temporary audit PASS: 60 FR/NFR mappings and 78 known test IDs with canonical priorities/statuses unchanged; all 18 original approval rows/blank signature/date/evidence fields and NOT AUTHORIZED execution fields preserved; ten targeted D-S decisions plus C-11/FR-027 explicitly PENDING with actual generic-review metadata separated; 12 original decisions, 11 conflicts and all 40 scenario rows unchanged; 23 ER entities/44 relationships; 12 stage models grouped 3/4/5 with 12 PKs/9 additional UQs/16 FKs, child/parent columns and referenced unique anchors checked and no later-stage parent; first-stage scalar coverage and six separate authorization gates; local links/current anchors/Markdown table widths/whitespace valid. Scope is exactly ten modified and one new feature-005 documentation files, no staged/deleted/out-of-scope changes, current branch and HEAD unchanged. Explicit excluded-path diff is clean.
+
+The audit script is read-only and temporary at /tmp/rdrvms-03a4-audit.py, not installed/committed application test code. Counts and FK checks are structural document evidence, not actual PostgreSQL constraints/catalog/privilege enforcement or pinned-version Prisma compilation. Existing validator is shallow and no CI execution is claimed. No runtime RED/GREEN or migration tests were executed.
+
+Final approval-readiness verdict: **NEEDS ADDITIONAL APPROVAL**. Specific remaining gates are scoped reviewer-role/option/field/constraint/parameter/amendment evidence, C-11 constitutional authority, FR-027 capability/issuer/recovery boundaries, credentials/session/CSRF/verification policy, audit/stream/native privilege decisions, source synchronization, exact repository implementation/test-target/SQL/checksum/operator/recovery authorization and future behavioral evidence. The handoff is prepared; no database implementation or SQL execution begins.
