@@ -3,12 +3,12 @@
   "info": {
     "title": "RDRVMS draft REST API",
     "version": "0.1.0",
-    "description": "PROPOSED contract only, no endpoints implemented. Review before code; private fields intentionally omitted."
+    "description": "Minimal backend foundation implements GET /health/live only. All other endpoints remain proposed and require review before implementation; private fields intentionally omitted."
   },
   "servers": [
     {
       "url": "http://localhost:3000",
-      "description": "Future local API; not currently implemented"
+      "description": "Local foundation API; only GET /health/live is implemented"
     }
   ],
   "paths": {
@@ -915,15 +915,33 @@
         "tags": [
           "FR-029"
         ],
-        "summary": "FR-029: Ops. Draft contract; refine response schema before coding.",
+        "summary": "FR-029: Minimal public process liveness; does not check database readiness.",
         "operationId": "get_health_live",
         "responses": {
           "200": {
-            "description": "Successful request"
+            "description": "The HTTP process is alive; no dependency health is implied.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "Server-generated correlation identifier.",
+                "schema": { "type": "string", "format": "uuid" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["status"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "status": { "type": "string", "const": "ok" }
+                  }
+                }
+              }
+            }
           }
         },
         "x-requirement-id": "FR-029",
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "security": []
       }
     },

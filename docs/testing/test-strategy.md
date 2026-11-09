@@ -7,4 +7,4 @@
 5. Production-like migration uses `prisma migrate deploy`, never destructive reset.
 6. Record command, commit, environment, outcome, logs and links. `tests/test-catalog.csv` is the live test ledger.
 
-**Status:** test specs and templates only. App test runner does not yet exist.
+**Status:** minimal backend foundation tests run in `apps/api` with Vitest/Supertest. Domain tests, database integration and the root templates remain unimplemented. See `specs/features/000-backend-foundation/evidence.md`; local runs do not establish CI evidence or complete AT-029/AT-032.
